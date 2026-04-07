@@ -9,9 +9,10 @@ A **tool-agnostic AI development template** that works across Claude Code, Antig
 ├── AI_MANIFEST.yaml     ← Template metadata
 ├── context/             ← Project-level AI instructions
 ├── agents/              ← AI persona definitions
-├── workflows/           ← Step-by-step task automation (16 workflows)
+├── workflows/           ← Step-by-step task automation (17 workflows)
 │   ├── build-large-system.md          ← 🏗️ 30-phase lifecycle (master)
 │   ├── build-large-system-phases-*.md ← Detailed phase descriptions
+│   ├── build-minimum-system.md        ← 🚀 9-phase compressed lifecycle
 │   └── ...                            ← 12 more workflow files
 ├── skills/              ← Atomic, reusable procedures
 ├── prompts/             ← Reusable prompt fragments
@@ -73,6 +74,24 @@ The flagship workflow: **30 phases × 8 stages** for building large-scale distri
 📖 **[How to use this workflow →](docs/BUILD_LARGE_SYSTEM_GUIDE.md)**
 
 **Workflow files**: [Master](workflows/build-large-system.md) · [Phases 01–10](workflows/build-large-system-phases-01-10.md) · [Phases 11–20](workflows/build-large-system-phases-11-20.md) · [Phases 21–30](workflows/build-large-system-phases-21-30.md)
+
+## 🚀 Build Minimum System Workflow
+
+Compressed **9-phase** version of the 30-phase lifecycle for **solo developers or small teams**. Same thinking, no enterprise overhead. ~6-8 weeks solo.
+
+| Phase | Compresses | Focus |
+|-------|-----------|-------|
+| 1. Business & Domain Discovery | 01-03 | Vision, NFRs, traffic model, risks |
+| 2. Architecture & Domain Design | 04-06 | Bounded contexts, security, system diagram |
+| 3. Data, API & Contract Design | 07-09 | ER diagrams, OpenAPI specs, event schemas |
+| 4. System Flows & Tech Stack | 10-12 | E2E flows, tech selection, infra sketch |
+| 5. Platform Skeleton & Dev Setup | 13-15 | Core lib, test pyramid, docker-compose |
+| 6. CI/CD Pipeline | 16 | Lean CI/CD pipeline |
+| 7. Build: Vertical Slice → Full | 17-19 | Prove 1 flow E2E, then build all |
+| 8. Observability & Hardening | 20-25 | Logs, metrics, traces, prod readiness |
+| 9. Deploy, Stabilize & Evolve | 26-30 | Ship, stabilize, establish ops |
+
+**Workflow file**: [build-minimum-system.md](workflows/build-minimum-system.md)
 
 ## Operating Model
 

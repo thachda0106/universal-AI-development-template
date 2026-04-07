@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-04-07
+
+### Added
+- **Build Minimum System Workflow** (`build-minimum-system.md`) — 9-phase compressed version of the 30-phase lifecycle for solo developers and small teams
+- Workflow registered in `AI_MANIFEST.yaml`
+- Documentation added to root `README.md` and `.ai/README.md`
+
 ## [1.2.0] - 2026-03-13
 
 ### Added

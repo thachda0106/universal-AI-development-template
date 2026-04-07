@@ -35,6 +35,7 @@ modules:
     - explain-logic
     - optimize-performance
     - update-docs
+    - build-minimum-system
   skills:
     - analyze-project-structure
     - apply-targeted-fix

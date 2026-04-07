@@ -16,12 +16,13 @@ Define your AI agents, workflows, skills, and conventions **once** in a canonica
 │   ├── CONVENTIONS.md   ← How: coding standards, naming rules
 │   └── BOUNDARIES.md    ← Don't: forbidden actions, safety constraints
 ├── agents/              ← AI persona definitions (6 canonical agents)
-├── workflows/           ← Step-by-step task automation (16 workflows)
+├── workflows/           ← Step-by-step task automation (17 workflows)
 │   ├── build-large-system.md          ← 🏗️ 30-phase system development lifecycle
 │   ├── build-large-system-phases-*.md ← Detailed phase descriptions
+│   ├── build-minimum-system.md        ← 🚀 9-phase compressed lifecycle
 │   ├── create-feature.md              ← Feature development workflow
 │   ├── fix-bug.md                     ← Bug fixing workflow
-│   └── ...                            ← 12 more workflow files
+│   └── ...                            ← 11 more workflow files
 ├── skills/              ← Atomic, reusable procedures (7 skills)
 ├── prompts/             ← Reusable prompt fragments and templates
 ├── scripts/             ← Automation (install, validate, migrate)
@@ -92,6 +93,26 @@ Stage H: Evolution                 → Phase 30
 - [Phases 01–10](.ai/workflows/build-large-system-phases-01-10.md) — Discovery → Architecture
 - [Phases 11–20](.ai/workflows/build-large-system-phases-11-20.md) — Platform → Service Dev
 - [Phases 21–30](.ai/workflows/build-large-system-phases-21-30.md) — Hardening → Operations → Evolution
+
+## 🚀 Build Minimum System Workflow
+
+A **compressed 9-phase workflow** derived from the 30-phase lifecycle, designed for **solo developers or small teams**. Same architectural thinking, no enterprise overhead.
+
+```
+Phase 1: Business & Domain Discovery    ← Phases 01-03
+Phase 2: Architecture & Domain Design   ← Phases 04-06
+Phase 3: Data, API & Contract Design    ← Phases 07-09
+Phase 4: System Flows & Tech Stack      ← Phases 10-12
+Phase 5: Platform Skeleton & Dev Setup  ← Phases 13-15
+Phase 6: CI/CD Pipeline (lean)          ← Phase 16
+Phase 7: Build: Vertical Slice → Full   ← Phases 17-19
+Phase 8: Observability & Hardening      ← Phases 20-25
+Phase 9: Deploy, Stabilize & Evolve     ← Phases 26-30
+```
+
+**Timeline**: ~6-8 weeks solo, ~10-14 weeks small team.
+
+**Workflow file**: [build-minimum-system.md](.ai/workflows/build-minimum-system.md)
 
 ## Design Principles
 
