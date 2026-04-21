@@ -63,6 +63,7 @@ bash adapters/antigravity/install.sh
 bash adapters/claude/install.sh
 bash adapters/cursor/install.sh
 bash adapters/aider/install.sh
+bash adapters/opencode/install.sh
 ```
 
 ### 4. Validate
@@ -138,14 +139,14 @@ In workflows, these phases expand into 6 detailed steps: **Scratchpad → Plan �
 
 ## Adapters
 
-| Feature | Claude Code | Antigravity | Cursor | Aider |
-|---------|:-----------:|:-----------:|:------:|:-----:|
-| Context files | ✅ CLAUDE.md | ✅ STYLE.md | ✅ .cursorrules | ✅ CONVENTIONS.md |
-| Agent definitions | ✅ | ❌ (in docs) | ❌ (embedded) | ❌ |
-| Workflows | ✅ commands/ | ✅ workflows/ | ❌ | ❌ |
-| Skills | ✅ | ✅ | ❌ | ❌ |
-| Scripts | ✅ | ✅ | ❌ | ❌ |
-| Clean/uninstall | ✅ | ✅ | ✅ | ✅ |
+| Feature | Claude Code | Antigravity | Cursor | Aider | OpenCode |
+|---------|:-----------:|:-----------:|:------:|:-----:|:--------:|
+| Context files | ✅ CLAUDE.md | ✅ STYLE.md | ✅ .cursorrules | ✅ CONVENTIONS.md | ✅ AGENTS.md |
+| Agent definitions | ✅ | ❌ (in docs) | ❌ (embedded) | ❌ | ❌ (system prompt) |
+| Workflows | ✅ commands/ | ✅ workflows/ | ❌ | ❌ | ❌ (AGENTS.md) |
+| Skills | ✅ | ✅ | ❌ | ❌ | ❌ (embedded) |
+| Scripts | ✅ | ✅ | ❌ | ❌ | ❌ (referenced) |
+| Clean/uninstall | ✅ | ✅ | ✅ | ✅ | ✅ |
 
 ## Migrating from Claude Code
 

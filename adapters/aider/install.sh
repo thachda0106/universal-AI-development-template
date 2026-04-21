@@ -39,6 +39,53 @@ read:
 
 # Auto-commit settings
 auto-commits: true
+
+# MCP Servers configuration
+mcp-servers:
+  prisma-mcp-server:
+    command: npx
+    args:
+      - -y
+      - prisma
+      - mcp
+    disabled: true
+  sequential-thinking:
+    command: npx
+    args:
+      - -y
+      - "@modelcontextprotocol/server-sequential-thinking"
+    disabled: true
+  context7:
+    command: npx
+    args:
+      - -y
+      - "@upstash/context7-mcp@2.0.2"
+    disabled: true
+  serena:
+    command: uvx
+    args:
+      - "--from"
+      - "git+https://github.com/oraios/serena"
+      - serena
+      - "start-mcp-server"
+      - "--context"
+      - "claude-code"
+    disabled: true
+  postgres-mcp:
+    command: uvx
+    args:
+      - postgres-mcp
+      - "--access-mode=unrestricted"
+    env:
+      DATABASE_URI: "postgresql://postgres:123456@localhost:5432/postgres"
+    disabled: true
+  pdf-reader-mcp:
+    command: npx
+    args:
+      - -y
+      - -q
+      - "@sylphx/pdf-reader-mcp"
+    disabled: true
 EOF
 
 echo ""

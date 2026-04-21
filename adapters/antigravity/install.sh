@@ -76,6 +76,73 @@ if [ -f "$AI_DIR/README.md" ]; then
     cp "$AI_DIR/README.md" "$PROJECT_ROOT/.agent/README.md"
 fi
 
+# 7. Create MCP configuration for Antigravity
+echo -e "${GREEN}✓${NC} Creating MCP configuration for Antigravity"
+mkdir -p "$PROJECT_ROOT/.agent"
+cat > "$PROJECT_ROOT/.agent/config.json" << 'EOF'
+{
+  "mcpServers": {
+    "prisma-mcp-server": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "prisma",
+        "mcp"
+      ],
+      "disabled": true
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "disabled": true
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@2.0.2"
+      ],
+      "disabled": true
+    },
+    "serena": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "--context",
+        "claude-code"
+      ],
+      "disabled": true
+    },
+    "postgres-mcp": {
+      "command": "uvx",
+      "args": [
+        "postgres-mcp",
+        "--access-mode=unrestricted"
+      ],
+      "env": {
+        "DATABASE_URI": "postgresql://postgres:123456@localhost:5432/postgres"
+      },
+      "disabled": true
+    },
+    "pdf-reader-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "-q",
+        "@sylphx/pdf-reader-mcp"
+      ],
+      "disabled": true
+    }
+  }
+}
+EOF
+
 echo ""
 echo -e "${GREEN}=== Antigravity adapter installed successfully ===${NC}"
 echo ""
@@ -85,3 +152,4 @@ echo "  .agent/workflows/         ($(ls -1 "$PROJECT_ROOT/.agent/workflows/" 2>/
 echo "  .agent/skills/            ($(ls -1d "$PROJECT_ROOT/.agent/skills"/*/ 2>/dev/null | wc -l) skill modules)"
 echo "  .agent/scripts/           ($(ls -1 "$PROJECT_ROOT/.agent/scripts/" 2>/dev/null | wc -l) scripts)"
 echo "  .agent/docs/              ($(ls -1 "$PROJECT_ROOT/.agent/docs/" 2>/dev/null | wc -l) docs)"
+echo "  .agent/config.json        (MCP server configuration)"

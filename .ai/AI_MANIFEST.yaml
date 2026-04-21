@@ -12,6 +12,7 @@ adapters: []
   # - antigravity
   # - cursor
   # - aider
+  # - opencode
 
 # Canonical modules included in this template
 modules:

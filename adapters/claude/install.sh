@@ -79,6 +79,72 @@ for f in "$AI_DIR"/docs/*; do
     cp "$f" "$PROJECT_ROOT/.claude/docs/$(basename "$f")"
 done
 
+# 8. Create MCP configuration for Claude Code
+echo -e "${GREEN}✓${NC} Creating MCP configuration for Claude Code"
+cat > "$PROJECT_ROOT/.claude/config.json" << 'EOF'
+{
+  "mcpServers": {
+    "prisma-mcp-server": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "prisma",
+        "mcp"
+      ],
+      "disabled": true
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "disabled": true
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@2.0.2"
+      ],
+      "disabled": true
+    },
+    "serena": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "--context",
+        "claude-code"
+      ],
+      "disabled": true
+    },
+    "postgres-mcp": {
+      "command": "uvx",
+      "args": [
+        "postgres-mcp",
+        "--access-mode=unrestricted"
+      ],
+      "env": {
+        "DATABASE_URI": "postgresql://postgres:123456@localhost:5432/postgres"
+      },
+      "disabled": true
+    },
+    "pdf-reader-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "-q",
+        "@sylphx/pdf-reader-mcp"
+      ],
+      "disabled": true
+    }
+  }
+}
+EOF
+
 echo ""
 echo -e "${GREEN}=== Claude Code adapter installed successfully ===${NC}"
 echo ""
@@ -88,3 +154,4 @@ echo "  .claude/agents/            ($(ls -1 "$PROJECT_ROOT/.claude/agents/" 2>/d
 echo "  .claude/commands/          ($(ls -1 "$PROJECT_ROOT/.claude/commands/" 2>/dev/null | wc -l) command files)"
 echo "  .claude/skills/            ($(ls -1d "$PROJECT_ROOT/.claude/skills"/*/ 2>/dev/null | wc -l) skill modules)"
 echo "  .claude/scripts/           ($(ls -1 "$PROJECT_ROOT/.claude/scripts/" 2>/dev/null | wc -l) scripts)"
+echo "  .claude/config.json        (MCP server configuration)"

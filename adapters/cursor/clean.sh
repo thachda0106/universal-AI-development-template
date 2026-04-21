@@ -23,6 +23,13 @@ if [ -f "$PROJECT_ROOT/.cursorrules" ]; then
     REMOVED=$((REMOVED + 1))
 fi
 
+# Remove .cursor/ directory (created for MCP config)
+if [ -d "$PROJECT_ROOT/.cursor" ]; then
+    rm -rf "$PROJECT_ROOT/.cursor"
+    echo -e "${GREEN}✓${NC} Removed .cursor/"
+    REMOVED=$((REMOVED + 1))
+fi
+
 echo ""
 if [ $REMOVED -eq 0 ]; then
     echo -e "${YELLOW}Nothing to clean — Cursor adapter output not found.${NC}"

@@ -57,6 +57,11 @@ if command -v aider &>/dev/null 2>&1 || [ -f "$PROJECT_ROOT/.aider.conf.yml" ]; 
     DETECTED+=(aider)
 fi
 
+# Check for OpenCode
+if command -v opencode &>/dev/null 2>&1 || [ -f "$PROJECT_ROOT/opencode.json" ] || [ -f "$PROJECT_ROOT/AGENTS.md" ]; then
+    DETECTED+=(opencode)
+fi
+
 if [ ${#DETECTED[@]} -eq 0 ] && [ ${#ARGS[@]} -eq 0 ]; then
     echo -e "${YELLOW}No AI tools detected automatically.${NC}"
     echo ""
@@ -65,6 +70,7 @@ if [ ${#DETECTED[@]} -eq 0 ] && [ ${#ARGS[@]} -eq 0 ]; then
     echo "  antigravity   - Antigravity IDE (.agent/ + .gemini/)"
     echo "  cursor        - Cursor IDE (.cursorrules)"
     echo "  aider         - Aider (.aider.conf.yml)"
+    echo "  opencode      - OpenCode (AGENTS.md + opencode.json)"
     echo ""
     echo "Usage: bash .ai/scripts/install-ai-template.sh <tool1> [tool2] ..."
     echo "Example: bash .ai/scripts/install-ai-template.sh antigravity cursor"

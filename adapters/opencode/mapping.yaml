@@ -1,0 +1,51 @@
+adapter: opencode
+version: "1.0.0"
+target_dirs: []
+
+mappings:
+  context:
+    ".ai/context/PROJECT.md":
+      target: "AGENTS.md"
+      transform: "merge_context_files"
+      note: "OpenCode primary instruction file"
+    ".ai/context/CONVENTIONS.md":
+      target: "AGENTS.md"
+      transform: "append"
+    ".ai/context/BOUNDARIES.md":
+      target: "AGENTS.md"
+      transform: "append"
+
+  agents:
+    ".ai/agents/*.agent.md":
+      target: null
+      transform: "skip"
+      note: "OpenCode doesn't have per-agent files — agents are defined in system prompt"
+
+  workflows:
+    ".ai/workflows/*.md":
+      target: null
+      transform: "skip"
+      note: "OpenCode workflows are executed directly from AGENTS.md instructions"
+
+  skills:
+    ".ai/skills/*/SKILL.md":
+      target: null
+      transform: "skip"
+      note: "OpenCode skills are embedded in agent behavior"
+
+  prompts:
+    ".ai/prompts/system.md":
+      target: "AGENTS.md"
+      transform: "append"
+
+  scripts:
+    ".ai/scripts/*.sh":
+      target: null
+      transform: "skip"
+      note: "OpenCode scripts are referenced in AGENTS.md but not copied"
+
+  docs:
+    ".ai/docs/*":
+      target: null
+      transform: "skip"
+      note: "OpenCode documentation referenced in AGENTS.md"

@@ -30,6 +30,13 @@ if [ -d "$PROJECT_ROOT/.gemini" ]; then
     REMOVED=$((REMOVED + 1))
 fi
 
+# Remove .agent/config.json if it exists
+if [ -f "$PROJECT_ROOT/.agent/config.json" ]; then
+    rm -f "$PROJECT_ROOT/.agent/config.json"
+    echo -e "${GREEN}✓${NC} Removed .agent/config.json"
+    REMOVED=$((REMOVED + 1))
+fi
+
 echo ""
 if [ $REMOVED -eq 0 ]; then
     echo -e "${YELLOW}Nothing to clean — Antigravity adapter output not found.${NC}"

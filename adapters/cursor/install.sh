@@ -66,11 +66,79 @@ echo -e "${GREEN}✓${NC} Generating .cursorrules from context files"
     done
 } > "$PROJECT_ROOT/.cursorrules"
 
+# Create MCP configuration for Cursor (in .cursor/config.json)
+echo -e "${GREEN}✓${NC} Creating MCP configuration for Cursor"
+mkdir -p "$PROJECT_ROOT/.cursor"
+cat > "$PROJECT_ROOT/.cursor/config.json" << 'EOF'
+{
+  "mcpServers": {
+    "prisma-mcp-server": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "prisma",
+        "mcp"
+      ],
+      "disabled": true
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "disabled": true
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@2.0.2"
+      ],
+      "disabled": true
+    },
+    "serena": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "--context",
+        "claude-code"
+      ],
+      "disabled": true
+    },
+    "postgres-mcp": {
+      "command": "uvx",
+      "args": [
+        "postgres-mcp",
+        "--access-mode=unrestricted"
+      ],
+      "env": {
+        "DATABASE_URI": "postgresql://postgres:123456@localhost:5432/postgres"
+      },
+      "disabled": true
+    },
+    "pdf-reader-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "-q",
+        "@sylphx/pdf-reader-mcp"
+      ],
+      "disabled": true
+    }
+  }
+}
+EOF
+
 echo ""
 echo -e "${GREEN}=== Cursor adapter installed successfully ===${NC}"
 echo ""
 echo "Generated files:"
 echo "  .cursorrules    (merged context + system prompt + agent summaries)"
+echo "  .cursor/config.json (MCP server configuration)"
 echo ""
 echo "Note: Cursor doesn't support workflows or skills natively."
 echo "These are embedded in .cursorrules as context."
