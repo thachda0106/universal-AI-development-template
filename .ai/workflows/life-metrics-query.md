@@ -59,26 +59,26 @@ WAIT for explicit approval.
 Read the relevant journal files based on the parsed query:
 
 ### For energy queries
-Read `C:\personal_sources\find-jobs\life-journal\time-series\energy.csv` for the requested date range.
+Read `{journal_path}\time-series\energy.csv` for the requested date range.
 Extract: levels per period, daily averages, trends.
 
 ### For focus queries
-Read `C:\personal_sources\find-jobs\life-journal\time-series\focus.csv` for the requested date range.
+Read `{journal_path}\time-series\focus.csv` for the requested date range.
 Extract: scores, session counts, distraction averages.
 
 ### For mood/emotion queries
-Read `C:\personal_sources\find-jobs\life-journal\time-series\mood.csv` + `C:\personal_sources\find-jobs\life-journal\events\triggers.csv` for the date range.
+Read `{journal_path}\time-series\mood.csv` + `{journal_path}\events\triggers.csv` for the date range.
 Extract: averages, distributions, trigger frequencies.
 
 ### For sleep queries
-Read `C:\personal_sources\find-jobs\life-journal\time-series\sleep.csv` for the date range.
+Read `{journal_path}\time-series\sleep.csv` for the date range.
 Extract: average hours, quality, trends.
 
 ### For decision follow-ups
-Scan `C:\personal_sources\find-jobs\life-journal\decisions\` for files where `status: active` and `follow_up_date <= today` or within requested range.
+Scan `{journal_path}\decisions\` for files where `status: active` and `follow_up_date <= today` or within requested range.
 
 ### For distortion queries
-Read `C:\personal_sources\find-jobs\life-journal\events\distortions.csv` for the date range.
+Read `{journal_path}\events\distortions.csv` for the date range.
 Extract: type frequencies, severity averages.
 
 ### For correlation queries

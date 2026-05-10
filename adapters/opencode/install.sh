@@ -23,7 +23,25 @@ if [ ! -d "$AI_DIR" ]; then
     exit 1
 fi
 
-# Create .opencode/ directory structure per OpenCode docs
+# Verify life-engineering config exists before installing
+LIFE_CONFIG="$AI_DIR/life-engineering/config.yaml"
+if [ -f "$LIFE_CONFIG" ]; then
+    JOURNAL_PATH=$(grep "^journal_path:" "$LIFE_CONFIG" | sed 's/^journal_path: *"\(.*\)"/\1/' | sed 's/^journal_path: *\(.*\)/\1/')
+    if [ -z "$JOURNAL_PATH" ] || [ "$JOURNAL_PATH" = "null" ] || [[ "$JOURNAL_PATH" == *"CHANGE THIS"* ]]; then
+        echo -e "${YELLOW}⚠ WARNING: life-engineering config found but journal_path is not set.${NC}"
+        echo -e "${YELLOW}  Run 'bash .ai/scripts/setup-life-engineering.sh' first.${NC}"
+        echo -e "${YELLOW}  Adapter will proceed, but life-engineering workflows require journal_path.${NC}"
+        echo ""
+    else
+        echo -e "${GREEN}✓${NC} life-engineering config: journal_path = $JOURNAL_PATH"
+    fi
+else
+    echo -e "${YELLOW}⚠ WARNING: life-engineering config not found at $LIFE_CONFIG${NC}"
+    echo -e "${YELLOW}  Life Systems Engineering is available but not configured.${NC}"
+    echo -e "${YELLOW}  Run 'bash .ai/scripts/setup-life-engineering.sh' to set up your journal.${NC}"
+    echo ""
+fi
+
 echo -e "${BLUE}Creating .opencode/ directory structure...${NC}"
 mkdir -p "$PROJECT_ROOT/.opencode/agents"
 mkdir -p "$PROJECT_ROOT/.opencode/commands"

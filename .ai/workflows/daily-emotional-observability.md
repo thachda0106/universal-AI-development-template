@@ -50,7 +50,7 @@ WAIT for explicit approval.
 
 ### 2.0 Baseline Read
 
-Read `C:\personal_sources\find-jobs\life-journal\meta\baselines.json` for historical comparisons:
+Read `{journal_path}\meta\baselines.json` for historical comparisons:
 
 ```json
 {
@@ -137,12 +137,12 @@ Log the complete emotional event record:
 
 ### 4.1 Persist to Journal
 
-Append to `C:\personal_sources\find-jobs\life-journal\time-series\mood.csv`:
+Append to `{journal_path}\time-series\mood.csv`:
 ```csv
 YYYY-MM-DD,[timestamp],[emotion],[intensity],[positive/negative],[trigger],[regulation],[effectiveness]
 ```
 
-If a trigger was identified, append to `C:\personal_sources\find-jobs\life-journal\events\triggers.csv`:
+If a trigger was identified, append to `{journal_path}\events\triggers.csv`:
 ```csv
 YYYY-MM-DD,[timestamp],[emotion],[intensity],[trigger],[context],[narrative],[urge],[deviation_type],[regulation],[effectiveness]
 ```
@@ -150,7 +150,7 @@ YYYY-MM-DD,[timestamp],[emotion],[intensity],[trigger],[context],[narrative],[ur
 ### 4.2 Git Commit
 
 ```bash
-cd C:\personal_sources\find-jobs\life-journal
+cd {journal_path}
 git add -A
 git commit -m "emotion: YYYY-MM-DD HH:MM"
 git push 2>/dev/null || echo "No remote configured — push skipped"

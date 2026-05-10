@@ -132,7 +132,7 @@ Log detected distortions and reframes:
 
 ### 4.1 Persist to Journal
 
-For each detected distortion, append to `C:\personal_sources\find-jobs\life-journal\events\distortions.csv`:
+For each detected distortion, append to `{journal_path}\events\distortions.csv`:
 ```csv
 YYYY-MM-DD,[distortion_type],[original_thought (escaped)],[severity],[reframe (escaped)]
 ```
@@ -140,7 +140,7 @@ YYYY-MM-DD,[distortion_type],[original_thought (escaped)],[severity],[reframe (e
 ### 4.2 Git Commit
 
 ```bash
-cd C:\personal_sources\find-jobs\life-journal
+cd {journal_path}
 git add -A
 git commit -m "cognitive-scan: YYYY-MM-DD"
 git push 2>/dev/null || echo "No remote configured — push skipped"

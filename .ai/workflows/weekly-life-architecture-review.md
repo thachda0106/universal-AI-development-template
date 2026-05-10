@@ -25,51 +25,51 @@ Automatically aggregate data from the life-journal for the past 7 days:
 
 ### 1.1 Read Time-Series Data
 
-Read `C:\personal_sources\find-jobs\life-journal\time-series\energy.csv` for last 7 days:
+Read `{journal_path}\time-series\energy.csv` for last 7 days:
 - Compute average energy per period (morning/afternoon/evening)
 - Compute overall weekly energy average
 - Detect day-of-week patterns
 
-Read `C:\personal_sources\find-jobs\life-journal\time-series\focus.csv` for last 7 days:
+Read `{journal_path}\time-series\focus.csv` for last 7 days:
 - Compute average focus quality
 - Count total focus sessions and minutes
 - Average distractions per session
 
-Read `C:\personal_sources\find-jobs\life-journal\time-series\mood.csv` for last 7 days:
+Read `{journal_path}\time-series\mood.csv` for last 7 days:
 - Compute average mood
 - Compute emotional range (min/max)
 - Identify most frequent emotions
 - Compute emotional volatility (stddev of mood values)
 
-Read `C:\personal_sources\find-jobs\life-journal\time-series\sleep.csv` for last 7 days:
+Read `{journal_path}\time-series\sleep.csv` for last 7 days:
 - Compute average sleep hours and quality
 - Detect sleep debt (hours below optimal)
 
 ### 1.2 Read Event Data
 
-Read `C:\personal_sources\find-jobs\life-journal\events\triggers.csv` for last 7 days:
+Read `{journal_path}\events\triggers.csv` for last 7 days:
 - Count emotional events
 - Most common triggers
 - Regulation effectiveness average
 
-Read `C:\personal_sources\find-jobs\life-journal\events\distortions.csv` for last 7 days:
+Read `{journal_path}\events\distortions.csv` for last 7 days:
 - Count distortions by type
 - Most common distortion patterns
 
 ### 1.3 Read Decision & Incident Metadata
 
-Scan `C:\personal_sources\find-jobs\life-journal\decisions\`:
+Scan `{journal_path}\decisions\`:
 - Count decisions made this week
 - Check for pending follow-ups
 
-Scan `C:\personal_sources\find-jobs\life-journal\incidents\`:
+Scan `{journal_path}\incidents\`:
 - Count incidents this week
 
 ### 1.4 Compute Trend Indicators
 
 Compare this week's metrics to:
 - Previous week's data (read previous 7 days)
-- Baselines from `C:\personal_sources\find-jobs\life-journal\meta\baselines.json`
+- Baselines from `{journal_path}\meta\baselines.json`
 
 **Reference**: `develop-life/part-2-debugging.md` Ch1 (RCA); `develop-life/part-8-meaning.md` Ch3 (Planning); `develop-life/special-topics.md` Topic 3 (Architecture Debt), Topic 7 (Life Refactoring)
 
@@ -180,7 +180,7 @@ What is the most important question to hold this week? (A question to reflect on
 
 ### 4.1 Write Weekly Summary
 
-Write `C:\personal_sources\find-jobs\life-journal\weekly\YYYY-Www.md`:
+Write `{journal_path}\weekly\YYYY-Www.md`:
 
 ```markdown
 ---
@@ -238,7 +238,7 @@ system_health: [score]
 
 ### 4.2 Update Baselines
 
-Update `C:\personal_sources\find-jobs\life-journal\meta\baselines.json`:
+Update `{journal_path}\meta\baselines.json`:
 - Recompute all averages, standard deviations from ALL historical time-series data
 - Update `common_emotions` from mood.csv frequency analysis
 - Update `common_triggers` from triggers.csv frequency analysis
@@ -247,7 +247,7 @@ Update `C:\personal_sources\find-jobs\life-journal\meta\baselines.json`:
 ### 4.3 Git Commit
 
 ```bash
-cd C:\personal_sources\find-jobs\life-journal
+cd {journal_path}
 git add -A
 git commit -m "weekly: YYYY-Www"
 git push 2>/dev/null || echo "No remote configured — push skipped"

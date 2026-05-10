@@ -1,0 +1,22 @@
+# Life Systems Engineering — Journal Configuration
+# =================================================
+# REQUIRED: Set this before running any adapter install or life-engineering workflow.
+# 
+# This is the path to your persistent life-journal git repository.
+# All daily data (metrics, logs, decisions, incidents) is stored here.
+#
+# Setup instructions:
+#   1. Choose a location for your journal (e.g., ~/life-journal)
+#   2. Create a private GitHub repo named "life-journal"
+#   3. Set journal_path below to your local path
+#   4. Run: bash .ai/scripts/setup-life-engineering.sh
+#   5. Then install your adapter: bash adapters/opencode/install.sh
+#
+# NOTE: This is YOUR personal life data. Keep the repo private.
+# =================================================
+
+journal_path: "C:/personal_sources/find-jobs/life-journal"  # ← CHANGE THIS for each device
+
+# Git auto-commit settings
+git_auto: true
+git_auto_push: true

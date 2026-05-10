@@ -85,7 +85,7 @@ Persist today's shutdown data to the life-journal:
 
 ### 4.1 Read Existing Daily File
 
-Read `C:\personal_sources\find-jobs\life-journal\daily\YYYY-MM-DD.md` (created by morning boot). If it doesn't exist (ran shutdown before boot), create it with the morning fields set to the same as evening values.
+Read `{journal_path}\daily\YYYY-MM-DD.md` (created by morning boot). If it doesn't exist (ran shutdown before boot), create it with the morning fields set to the same as evening values.
 
 ### 4.2 Append Evening Data to Daily File
 
@@ -123,19 +123,19 @@ next_intention: "[tomorrow's intention]"
 
 ### 4.3 Append Time-Series Data
 
-Append to `C:\personal_sources\find-jobs\life-journal\time-series\energy.csv`:
+Append to `{journal_path}\time-series\energy.csv`:
 ```csv
 YYYY-MM-DD,morning,[morning energy],[primary activity],
 YYYY-MM-DD,afternoon,[afternoon energy],[primary activity],
 YYYY-MM-DD,evening,[evening energy],[primary activity],
 ```
 
-Append to `C:\personal_sources\find-jobs\life-journal\time-series\focus.csv`:
+Append to `{journal_path}\time-series\focus.csv`:
 ```csv
 YYYY-MM-DD,, [focus_quality], [total deep work minutes], [distraction count], [notes]
 ```
 
-If mood_min/mood_max represent distinct emotional events, append to `C:\personal_sources\find-jobs\life-journal\time-series\mood.csv`:
+If mood_min/mood_max represent distinct emotional events, append to `{journal_path}\time-series\mood.csv`:
 ```csv
 YYYY-MM-DD,[time of min], [emotion at min], [mood_min], [category], [trigger if known],,
 YYYY-MM-DD,[time of max], [emotion at max], [mood_max], [category], [trigger if known],,
@@ -144,7 +144,7 @@ YYYY-MM-DD,[time of max], [emotion at max], [mood_max], [category], [trigger if 
 ### 4.4 Git Commit
 
 ```bash
-cd C:\personal_sources\find-jobs\life-journal
+cd {journal_path}
 git add -A
 git commit -m "shutdown: YYYY-MM-DD"
 git push 2>/dev/null || echo "No remote configured — push skipped"

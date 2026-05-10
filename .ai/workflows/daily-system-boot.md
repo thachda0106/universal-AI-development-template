@@ -91,7 +91,7 @@ After boot sequence completes, persist data to the life-journal:
 
 ### 4.1 Write Daily Journal File
 
-Write/update `C:\personal_sources\find-jobs\life-journal\daily\YYYY-MM-DD.md`:
+Write/update `{journal_path}\daily\YYYY-MM-DD.md`:
 
 ```markdown
 ---
@@ -113,12 +113,12 @@ attention_budget: "[time blocks allocation]"
 
 ### 4.2 Append Time-Series Data
 
-Append to `C:\personal_sources\find-jobs\life-journal\time-series\sleep.csv`:
+Append to `{journal_path}\time-series\sleep.csv`:
 ```csv
 YYYY-MM-DD,[sleep_hours],[sleep_quality],[bedtime optional],[waketime optional],[notes]
 ```
 
-Append to `C:\personal_sources\find-jobs\life-journal\time-series\mood.csv`:
+Append to `{journal_path}\time-series\mood.csv`:
 ```csv
 YYYY-MM-DD,[HH:MM],[current emotion],[mood_morning],morning,,,
 ```
@@ -126,7 +126,7 @@ YYYY-MM-DD,[HH:MM],[current emotion],[mood_morning],morning,,,
 ### 4.3 Git Commit
 
 ```bash
-cd C:\personal_sources\find-jobs\life-journal
+cd {journal_path}
 git add -A
 git commit -m "boot: YYYY-MM-DD"
 git push 2>/dev/null || echo "No remote configured — push skipped"

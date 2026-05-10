@@ -185,9 +185,9 @@ After resolution and recovery, write the postmortem:
 
 ### 4.1 Persist to Journal
 
-Generate incident ID by scanning `C:\personal_sources\find-jobs\life-journal\incidents\` for the highest existing number (e.g., INC-012). New ID = next number (INC-013).
+Generate incident ID by scanning `{journal_path}\incidents\` for the highest existing number (e.g., INC-012). New ID = next number (INC-013).
 
-Write `C:\personal_sources\find-jobs\life-journal\incidents\INC-NNN.md`:
+Write `{journal_path}\incidents\INC-NNN.md`:
 
 ```markdown
 ---
@@ -215,7 +215,7 @@ resolved: true
 [what the system revealed]
 ```
 
-Also append a reference line to `C:\personal_sources\find-jobs\life-journal\daily\YYYY-MM-DD.md`:
+Also append a reference line to `{journal_path}\daily\YYYY-MM-DD.md`:
 ```yaml
 incident_ref: "INC-NNN"
 ```
@@ -223,7 +223,7 @@ incident_ref: "INC-NNN"
 ### 4.2 Git Commit
 
 ```bash
-cd C:\personal_sources\find-jobs\life-journal
+cd {journal_path}
 git add -A
 git commit -m "incident: INC-NNN - [brief summary]"
 git push 2>/dev/null || echo "No remote configured — push skipped"

@@ -51,8 +51,8 @@ WAIT for explicit approval.
 
 ### 2.0 Historical Pattern Read
 
-Read `C:\personal_sources\find-jobs\life-journal\time-series\energy.csv` for last 7 days.
-Read `C:\personal_sources\find-jobs\life-journal\time-series\sleep.csv` for last 7 days.
+Read `{journal_path}\time-series\energy.csv` for last 7 days.
+Read `{journal_path}\time-series\sleep.csv` for last 7 days.
 
 **Pattern detection**: Scan historical data for recurring patterns:
 - Do energy drops consistently follow specific activities?
@@ -145,13 +145,13 @@ Log energy audit results:
 ### 4.1 Notes to Journal
 
 Energy data is primarily captured by `/daily-system-shutdown` (energy.csv appends). This audit adds:
-- Drain/source analysis appended to today's daily file at `C:\personal_sources\find-jobs\life-journal\daily\YYYY-MM-DD.md` as a note
+- Drain/source analysis appended to today's daily file at `{journal_path}\daily\YYYY-MM-DD.md` as a note
 - Optimization commitments recorded for weekly review context
 
 ### 4.2 Git Commit
 
 ```bash
-cd C:\personal_sources\find-jobs\life-journal
+cd {journal_path}
 git add -A
 git commit -m "energy-audit: YYYY-MM-DD"
 git push 2>/dev/null || echo "No remote configured — push skipped"

@@ -96,7 +96,7 @@ After focus session and recovery:
 
 ### 4.1 Persist to Journal
 
-Append to `C:\personal_sources\find-jobs\life-journal\time-series\focus.csv`:
+Append to `{journal_path}\time-series\focus.csv`:
 ```csv
 YYYY-MM-DD,[session_id],[score],[duration_min],[distractions],[notes]
 ```
@@ -106,7 +106,7 @@ Where `session_id` = sequential number for today's sessions (1, 2, 3...).
 ### 4.2 Git Commit
 
 ```bash
-cd C:\personal_sources\find-jobs\life-journal
+cd {journal_path}
 git add -A
 git commit -m "focus: YYYY-MM-DD session-[N]"
 git push 2>/dev/null || echo "No remote configured — push skipped"

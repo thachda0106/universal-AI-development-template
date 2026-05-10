@@ -22,6 +22,23 @@ if [ ! -d "$AI_DIR" ]; then
     exit 1
 fi
 
+# Verify life-engineering config exists before installing
+LIFE_CONFIG="$AI_DIR/life-engineering/config.yaml"
+if [ -f "$LIFE_CONFIG" ]; then
+    JOURNAL_PATH=$(grep "^journal_path:" "$LIFE_CONFIG" | sed 's/^journal_path: *"\(.*\)"/\1/' | sed 's/^journal_path: *\(.*\)/\1/')
+    if [ -z "$JOURNAL_PATH" ] || [ "$JOURNAL_PATH" = "null" ] || [[ "$JOURNAL_PATH" == *"CHANGE THIS"* ]]; then
+        echo -e "${YELLOW}⚠ WARNING: life-engineering config found but journal_path is not set.${NC}"
+        echo -e "${YELLOW}  Run 'bash .ai/scripts/setup-life-engineering.sh' first.${NC}"
+        echo ""
+    else
+        echo -e "${GREEN}✓${NC} life-engineering config: journal_path = $JOURNAL_PATH"
+    fi
+else
+    echo -e "${YELLOW}⚠ WARNING: life-engineering config not found at $LIFE_CONFIG${NC}"
+    echo -e "${YELLOW}  Run 'bash .ai/scripts/setup-life-engineering.sh' to configure.${NC}"
+    echo ""
+fi
+
 # Cursor uses a single .cursorrules file at the project root.
 # We merge all context files + system prompt + agent summaries into it.
 echo -e "${GREEN}✓${NC} Generating .cursorrules from context files"

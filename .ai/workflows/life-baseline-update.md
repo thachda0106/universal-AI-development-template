@@ -19,17 +19,17 @@ Recompute all statistical baselines from the accumulated life-journal data. Run 
 
 Read ALL data from journal time-series files:
 
-1. **Energy**: `C:\personal_sources\find-jobs\life-journal\time-series\energy.csv`
+1. **Energy**: `{journal_path}\time-series\energy.csv`
    - Count total rows (excluding header)
-2. **Focus**: `C:\personal_sources\find-jobs\life-journal\time-series\focus.csv`
+2. **Focus**: `{journal_path}\time-series\focus.csv`
    - Count total rows (excluding header)
-3. **Mood**: `C:\personal_sources\find-jobs\life-journal\time-series\mood.csv`
+3. **Mood**: `{journal_path}\time-series\mood.csv`
    - Count total rows, separate positive vs negative
-4. **Sleep**: `C:\personal_sources\find-jobs\life-journal\time-series\sleep.csv`
+4. **Sleep**: `{journal_path}\time-series\sleep.csv`
    - Count total rows
-5. **Triggers**: `C:\personal_sources\find-jobs\life-journal\events\triggers.csv`
+5. **Triggers**: `{journal_path}\events\triggers.csv`
    - Count total events
-6. **Distortions**: `C:\personal_sources\find-jobs\life-journal\events\distortions.csv`
+6. **Distortions**: `{journal_path}\events\distortions.csv`
    - Count total scans
 
 **Output**: `SCRATCHPAD.md` with data volume summary
@@ -86,7 +86,7 @@ Compute all baseline statistics:
 
 **Computation must be complete.**
 
-Write updated `C:\personal_sources\find-jobs\life-journal\meta\baselines.json`:
+Write updated `{journal_path}\meta\baselines.json`:
 
 ```json
 {
@@ -176,7 +176,7 @@ Write updated `C:\personal_sources\find-jobs\life-journal\meta\baselines.json`:
 ### Git Commit
 
 ```bash
-cd C:\personal_sources\find-jobs\life-journal
+cd {journal_path}
 git add -A
 git commit -m "baselines: recomputed from [N] data points"
 git push 2>/dev/null || echo "No remote configured — push skipped"

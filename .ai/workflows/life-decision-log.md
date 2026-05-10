@@ -23,7 +23,7 @@ Record significant decisions with full context, analysis, and expected outcomes.
 
 Define the decision to be made:
 
-0. **Check pending follow-ups**: Scan `C:\personal_sources\find-jobs\life-journal\decisions\` for decisions with `status: active` and `follow_up_date <= today`. Alert user of any due follow-ups.
+0. **Check pending follow-ups**: Scan `{journal_path}\decisions\` for decisions with `status: active` and `follow_up_date <= today`. Alert user of any due follow-ups.
 1. **Decision statement**: What decision needs to be made? State it clearly.
 2. **Options**: What are the realistic options? (At least 2. If there seems to be only 1, question the assumption.)
 3. **Timeframe**: By when does this decision need to be made?
@@ -180,9 +180,9 @@ After the follow-up date:
 
 ### 3.1 Persist to Journal
 
-Generate decision ID by scanning `C:\personal_sources\find-jobs\life-journal\decisions\` for the highest existing number (e.g., DEC-005). New ID = next number (DEC-006).
+Generate decision ID by scanning `{journal_path}\decisions\` for the highest existing number (e.g., DEC-005). New ID = next number (DEC-006).
 
-Write `C:\personal_sources\find-jobs\life-journal\decisions\DEC-NNN.md`:
+Write `{journal_path}\decisions\DEC-NNN.md`:
 
 ```markdown
 ---
@@ -209,7 +209,7 @@ Calibration update:
 ### 3.2 Git Commit
 
 ```bash
-cd C:\personal_sources\find-jobs\life-journal
+cd {journal_path}
 git add -A
 git commit -m "decision: DEC-NNN - [brief title]"
 git push 2>/dev/null || echo "No remote configured — push skipped"
