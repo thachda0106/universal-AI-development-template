@@ -15,19 +15,29 @@ Define your AI agents, workflows, skills, and conventions **once** in a canonica
 │   ├── PROJECT.md       ← What: tech stack, commands, architecture
 │   ├── CONVENTIONS.md   ← How: coding standards, naming rules
 │   └── BOUNDARIES.md    ← Don't: forbidden actions, safety constraints
-├── agents/              ← AI persona definitions (6 canonical agents)
-├── workflows/           ← Step-by-step task automation (17 workflows)
+├── agents/              ← AI persona definitions (7 canonical agents)
+├── workflows/           ← Step-by-step task automation (29 workflows)
 │   ├── build-large-system.md          ← 🏗️ 30-phase system development lifecycle
 │   ├── build-large-system-phases-*.md ← Detailed phase descriptions
 │   ├── build-minimum-system.md        ← 🚀 9-phase compressed lifecycle
 │   ├── create-feature.md              ← Feature development workflow
 │   ├── fix-bug.md                     ← Bug fixing workflow
-│   └── ...                            ← 11 more workflow files
-├── skills/              ← Atomic, reusable procedures (7 skills)
+│   ├── daily-system-boot.md           ← 🧬 Morning boot sequence
+│   ├── daily-system-shutdown.md       ← 🌙 Evening shutdown & metrics
+│   ├── daily-focus-session.md         ← ⚡ Deep work execution
+│   ├── daily-emotional-observability.md ← ❤️ Emotional state check
+│   ├── daily-cognitive-scan.md        ← 🧠 Cognitive distortion detection
+│   ├── daily-energy-audit.md          ← 🔋 Energy drain analysis
+│   ├── weekly-life-architecture-review.md ← 📊 Weekly retro & planning
+│   ├── life-incident-response.md      ← 🚨 Emotional crisis protocol
+│   ├── life-decision-log.md           ← 📝 Decision record with EV calc
+│   ├── life-journal-init.md           ← 🏁 Initialize journal repository
+│   ├── life-metrics-query.md          ← 🔍 Query accumulated life data
+│   └── life-baseline-update.md        ← 📈 Recompute anomaly thresholds
+├── skills/              ← Atomic, reusable procedures (8 skills)
 ├── prompts/             ← Reusable prompt fragments and templates
-├── scripts/             ← Automation (install, validate, migrate)
+├── scripts/             ← Automation (install, validate, migrate, setup)
 └── docs/                ← Documentation
-    └── BUILD_LARGE_SYSTEM_GUIDE.md    ← 📖 How to use the 30-phase workflow
 
 adapters/                ← Tool-specific translation layers
 ├── claude/              ← Claude Code → .claude/ + CLAUDE.md
@@ -115,6 +125,73 @@ Phase 9: Deploy, Stabilize & Evolve     ← Phases 26-30
 
 **Workflow file**: [build-minimum-system.md](.ai/workflows/build-minimum-system.md)
 
+---
+
+## 🧬 Life Systems Engineering
+
+A complete daily practice system that applies **software engineering principles to human life** — treating your mind, emotions, energy, and decisions as a production system requiring observability, debugging, and architecture.
+
+```
+AGENT:       life-engineer                    ← Applies engineering thinking to life
+SKILL:       life-engineering-daily-practices ← 9 daily practice procedures
+CONFIG:      .ai/life-config.yaml              ← Per-device journal path
+
+DAILY ROUTINE (all times approximate)
+═══════════════════════════════════════
+🌅  Morning (10 min):   daily-system-boot     ← Initialize state, allocate attention
+☀️  Mid-day (5 min):    daily-emotional-observability ← Check emotional metrics
+⚡  Before focus:       daily-focus-session   ← Single-threaded execution
+🌙  Evening (10 min):   daily-system-shutdown  ← Collect metrics, log, commit
+📊  Weekly (30 min):    weekly-life-architecture-review ← Trend analysis, debt assessment
+
+ON-DEMAND
+🚨  life-incident-response    ← Emotional crisis: triage → RCA → postmortem
+📝  life-decision-log         ← Decision ADR with expected value, follow-up
+🔍  life-metrics-query        ← Query accumulated data: trends, patterns, follow-ups
+```
+
+All daily data is stored in a **version-controlled journal repository** (your own private git repo). Each command auto-commits to git, enabling multi-device sync via GitHub, full history with `git log`, and trend analysis across days/weeks/months.
+
+### Setup on a New Device
+
+```bash
+# 1. Run setup FIRST — prompts for your journal path, creates directory structure
+bash .ai/scripts/setup-life-engineering.sh
+
+# 2. Connect to your private GitHub repo
+cd /path/to/your/life-journal
+git remote add origin https://github.com/YOUR_USERNAME/life-journal.git
+git push -u origin master
+
+# 3. Install adapter — verifies config exists before proceeding
+bash adapters/opencode/install.sh   # or claude, cursor, aider, antigravity
+```
+
+### How It Works
+
+| Component | Purpose | Reads | Writes |
+|-----------|---------|-------|--------|
+| `.ai/life-config.yaml` | Per-device journal path | — | Configured once |
+| `.ai/agents/life-engineer.agent.md` | Life engineer persona | Config, workflows | — |
+| `.ai/skills/life-engineering-daily-practices/SKILL.md` | Core procedures & analogy map | — | — |
+| 12 workflow files | Daily/weekly/on-demand routines | Config, journal | Journal files |
+| `life-journal/` (separate repo) | Persistent metric store | — | Daily data, decisions, incidents |
+
+### Engineering Analogy
+
+| Software Concept | Life Concept |
+|-----------------|-------------|
+| Observability stack | Self-awareness system |
+| Logging | Journaling |
+| Metrics / Monitoring | Habit tracking |
+| Production incident | Emotional crisis |
+| Incident response | Crisis management protocol |
+| Technical debt | Neglected habits |
+| Circuit breaker | Boundary enforcement |
+| Eventual consistency | Delayed life outcomes |
+| Anti-fragility | Post-traumatic growth |
+| `git log` | Life history review |
+
 ## Design Principles
 
 | Principle | Explanation |
@@ -142,10 +219,11 @@ In workflows, these phases expand into 6 detailed steps: **Scratchpad → Plan �
 | Feature | Claude Code | Antigravity | Cursor | Aider | OpenCode |
 |---------|:-----------:|:-----------:|:------:|:-----:|:--------:|
 | Context files | ✅ CLAUDE.md | ✅ STYLE.md | ✅ .cursorrules | ✅ CONVENTIONS.md | ✅ AGENTS.md |
-| Agent definitions | ✅ | ❌ (in docs) | ❌ (embedded) | ❌ | ❌ (system prompt) |
-| Workflows | ✅ commands/ | ✅ workflows/ | ❌ | ❌ | ❌ (AGENTS.md) |
-| Skills | ✅ | ✅ | ❌ | ❌ | ❌ (embedded) |
-| Scripts | ✅ | ✅ | ❌ | ❌ | ❌ (referenced) |
+| Agent definitions | ✅ | ❌ (in docs) | ❌ (embedded) | ❌ | ✅ .opencode/agents/ |
+| Workflows | ✅ commands/ | ✅ workflows/ | ❌ | ❌ | ✅ .opencode/commands/ |
+| Skills | ✅ | ✅ | ❌ | ❌ | ✅ .opencode/skills/ |
+| Scripts | ✅ | ✅ | ❌ | ❌ | ✅ .opencode/ |
+| Life Engineering | ✅ | ✅ | ⚠️ (limited) | ⚠️ (limited) | ✅ full support |
 | Clean/uninstall | ✅ | ✅ | ✅ | ✅ | ✅ |
 
 ## Migrating from Claude Code
