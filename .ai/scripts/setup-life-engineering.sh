@@ -15,7 +15,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-CONFIG_FILE="$PROJECT_ROOT/.ai/life-engineering/config.yaml"
+CONFIG_FILE="$PROJECT_ROOT/.ai/life-config.yaml"
 LIB_SCRIPT="$PROJECT_ROOT/.ai/scripts/_lib.sh"
 
 # Colors

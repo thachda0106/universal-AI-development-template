@@ -23,7 +23,7 @@ if [ ! -d "$AI_DIR" ]; then
 fi
 
 # Verify life-engineering config exists before installing
-LIFE_CONFIG="$AI_DIR/life-engineering/config.yaml"
+LIFE_CONFIG="$AI_DIR/../life-config.yaml"
 if [ -f "$LIFE_CONFIG" ]; then
     JOURNAL_PATH=$(grep "^journal_path:" "$LIFE_CONFIG" | sed 's/^journal_path: *"\(.*\)"/\1/' | sed 's/^journal_path: *\(.*\)/\1/')
     if [ -z "$JOURNAL_PATH" ] || [ "$JOURNAL_PATH" = "null" ] || [[ "$JOURNAL_PATH" == *"CHANGE THIS"* ]]; then

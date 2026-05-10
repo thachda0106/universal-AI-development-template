@@ -9,7 +9,7 @@ Initialize the persistent journal for the Life Systems Engineering system. Run t
 
 > **When**: Once, immediately after setting up the Life Engineering system
 > **Duration**: 5 minutes
-> **Config**: Read `journal_path` from `.ai/life-engineering/config.yaml`
+> **Config**: Read `journal_path` from `.ai/life-config.yaml`
 
 ---
 
@@ -17,7 +17,7 @@ Initialize the persistent journal for the Life Systems Engineering system. Run t
 
 Verify current state:
 
-1. **Check if journal already exists**: Does the `{journal_path}` exist with the full structure? (Read path from `.ai/life-engineering/config.yaml`)
+1. **Check if journal already exists**: Does the `{journal_path}` exist with the full structure? (Read path from `.ai/life-config.yaml`)
 2. **Check git status**: Is there already a git repo? Is a remote configured?
 3. **Check existing data**: Are there any existing journal files from previous runs?
 
@@ -43,7 +43,7 @@ WAIT for explicit approval.
    decisions/   weekly/        meta/
    ```
 
-2. **Create config** `journal.yaml` (read `journal_path` from `.ai/life-engineering/config.yaml`):
+2. **Create config** `journal.yaml` (read `journal_path` from `.ai/life-config.yaml`):
    ```yaml
    repo_path: "{journal_path}"
    git_auto: true
