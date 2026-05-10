@@ -21,8 +21,11 @@ modules:
     - code-reviewer
     - doc-keeper
     - feature-builder
+    - life-engineer
     - performance-optimizer
     - test-engineer
+  docs:
+    - life-engineering
   workflows:
     - ai-workflow
     - create-feature
@@ -37,10 +40,23 @@ modules:
     - optimize-performance
     - update-docs
     - build-minimum-system
+    - daily-system-boot
+    - daily-system-shutdown
+    - daily-focus-session
+    - daily-emotional-observability
+    - daily-cognitive-scan
+    - daily-energy-audit
+    - weekly-life-architecture-review
+    - life-incident-response
+    - life-decision-log
+    - life-journal-init
+    - life-metrics-query
+    - life-baseline-update
   skills:
     - analyze-project-structure
     - apply-targeted-fix
     - diagnose-bug-root-cause
+    - life-engineering-daily-practices
     - locate-code-patterns
     - trace-execution-flow
     - validate-architecture
