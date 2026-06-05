@@ -1,7 +1,13 @@
 adapter: claude
 version: "1.0.0"
 target_dirs:
-  - .claude/
+  - ".claude/"
+  - ".claude/agents/"
+  - ".claude/commands/"
+  - ".claude/skills/"
+  - ".claude/scripts/"
+  - ".claude/prompts/"
+  - ".claude/docs/"
 
 mappings:
   context:

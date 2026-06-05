@@ -1,6 +1,10 @@
 adapter: opencode
 version: "1.0.0"
-target_dirs: []
+target_dirs:
+  - ".opencode/"
+  - ".opencode/agents/"
+  - ".opencode/commands/"
+  - ".opencode/skills/"
 
 mappings:
   context:
@@ -17,21 +21,21 @@ mappings:
 
   agents:
     ".ai/agents/*.agent.md":
-      target: null
-      transform: "skip"
-      note: "OpenCode doesn't have per-agent files — agents are defined in system prompt"
+      target: ".opencode/agents/{stem}.md"
+      transform: "copy"
+      note: "Agent markdown files with YAML frontmatter — body is the agent prompt"
 
   workflows:
     ".ai/workflows/*.md":
-      target: null
-      transform: "skip"
-      note: "OpenCode workflows are executed directly from AGENTS.md instructions"
+      target: ".opencode/commands/{filename}"
+      transform: "copy"
+      note: "Workflow files become custom command prompt templates"
 
   skills:
     ".ai/skills/*/SKILL.md":
-      target: null
-      transform: "skip"
-      note: "OpenCode skills are embedded in agent behavior"
+      target: ".opencode/skills/{dirname}/SKILL.md"
+      transform: "copy"
+      note: "Skill modules with SKILL.md in named subdirectories"
 
   prompts:
     ".ai/prompts/system.md":

@@ -1,0 +1,59 @@
+adapter: codex
+version: "1.0.0"
+target_dirs:
+  - ".codex/"
+  - ".codex/skills/"
+  - ".codex/rules/"
+  - ".codex/agents/"
+  - ".codex/docs/"
+  - ".codex/docs/agents/"
+  - ".codex/docs/workflows/"
+
+mappings:
+  context:
+    ".ai/context/PROJECT.md":
+      target: ".codex/AGENTS.md"
+      transform: "merge_context_files"
+      note: "Codex reads AGENTS.md from ~/.codex/ or project root"
+    ".ai/context/CONVENTIONS.md":
+      target: ".codex/AGENTS.md"
+      transform: "append"
+    ".ai/context/BOUNDARIES.md":
+      target: ".codex/AGENTS.md"
+      transform: "append"
+
+  agents:
+    ".ai/agents/*.agent.md":
+      target: ".codex/docs/agents/{stem}.md"
+      transform: "copy"
+      note: "Codex doesn't have per-agent files — agents copied as reference docs"
+
+  workflows:
+    ".ai/workflows/*.md":
+      target: ".codex/docs/workflows/{filename}"
+      transform: "copy"
+      note: "Codex doesn't have native commands — workflows copied as reference docs"
+
+  skills:
+    ".ai/skills/*/SKILL.md":
+      target: ".codex/skills/{dirname}/SKILL.md"
+      transform: "copy"
+      note: "Codex skills use SKILL.md with YAML frontmatter — compatible format"
+
+  prompts:
+    ".ai/prompts/system.md":
+      target: ".codex/AGENTS.md"
+      transform: "append"
+    ".ai/prompts/templates/*":
+      target: ".codex/docs/{filename}"
+      transform: "copy"
+
+  scripts:
+    ".ai/scripts/*.sh":
+      target: null
+      transform: "skip"
+
+  docs:
+    ".ai/docs/*":
+      target: null
+      transform: "skip"

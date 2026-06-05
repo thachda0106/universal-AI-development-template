@@ -174,6 +174,48 @@ cat > "$OUTPUT_DIR/opencode.json" << 'EOF'
 }
 EOF
 
+# 4a. Append agent definitions to opencode.json
+echo -e "${GREEN}✓${NC} Adding agent definitions to opencode.json"
+# Remove the root closing } (last line), then add comma to mcp closing brace
+sed -i '$ { /^}$/d }' "$OUTPUT_DIR/opencode.json"
+sed -i '$ s/$/,/' "$OUTPUT_DIR/opencode.json"
+# Count agents to avoid trailing comma on last entry
+AGENT_COUNT=$(ls -1 "$AI_DIR"/agents/*.agent.md 2>/dev/null | wc -l)
+CURRENT=0
+{
+    echo '  "agent": {'
+    for f in "$AI_DIR"/agents/*.agent.md; do
+        [ -f "$f" ] || continue
+        CURRENT=$((CURRENT + 1))
+        BASENAME=$(basename "$f" .agent.md)
+        DESC=$(grep '^description:' "$f" | head -1 | sed 's/^description: *//' || true)
+        # Escape double quotes in description for JSON
+        DESC=$(echo "$DESC" | sed 's/"/\\"/g')
+        # Set permissions based on agent role
+        case "$BASENAME" in
+            code-reviewer) PERM='"edit": "deny"' ;;
+            doc-keeper) PERM='"bash": "ask"' ;;
+            *) PERM='"edit": "allow", "bash": "allow"' ;;
+        esac
+        echo "    \"$BASENAME\": {"
+        echo "      \"description\": \"$DESC\","
+        echo "      \"mode\": \"subagent\","
+        echo "      \"prompt\": \"{file:./.opencode/agents/$BASENAME.md}\","
+        if [ $CURRENT -lt $AGENT_COUNT ]; then
+            echo "      \"permission\": { $PERM }"
+            echo "    },"
+        else
+            echo "      \"permission\": { $PERM }"
+            echo "    }"
+        fi
+    done
+    echo '  },'
+    echo '  "skills": {'
+    echo '    "paths": [".opencode/skills"]'
+    echo '  }'
+    echo '}'
+} >> "$OUTPUT_DIR/opencode.json"
+
 # 5. Also create opencode.json in .opencode/ directory
 cp "$OUTPUT_DIR/opencode.json" "$OUTPUT_DIR/.opencode/opencode.json"
 

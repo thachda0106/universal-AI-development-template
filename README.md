@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-A **tool-agnostic AI development template** that works across Claude Code, Antigravity, Cursor, Aider, and future AI IDEs.
+A **tool-agnostic AI development template** that works across OpenCode, Claude Code, Antigravity, Cursor, Aider, Codex, and future AI IDEs.
 
 Define your AI agents, workflows, skills, and conventions **once** in a canonical `.ai/` directory. Adapters translate them into tool-native formats automatically.
 
@@ -44,14 +44,16 @@ adapters/                ← Tool-specific translation layers
 ├── claude/              ← Claude Code → CLAUDE.md + .claude/
 ├── antigravity/         ← Antigravity → .gemini/ + .agent/
 ├── cursor/              ← Cursor → .cursorrules + .cursor/
-└── aider/               ← Aider → CONVENTIONS.md + .aider.conf.yml
+├── aider/               ← Aider → CONVENTIONS.md + .aider.conf.yml
+└── codex/               ← Codex → AGENTS.md + config.toml
 
 output/                  ← Generated adapter output (gitignored)
 ├── opencode/            ← AGENTS.md, opencode.json, .opencode/
 ├── claude/              ← CLAUDE.md, .claude/
 ├── cursor/              ← .cursorrules, .cursor/
 ├── antigravity/         ← .gemini/, .agent/
-└── aider/               ← CONVENTIONS.md, .aider.conf.yml
+├── aider/               ← CONVENTIONS.md, .aider.conf.yml
+└── codex/               ← AGENTS.md, config.toml
 ```
 
 ## Quick Start
@@ -77,11 +79,12 @@ Edit these files with your project's details:
 bash .ai/scripts/install-ai-template.sh
 
 # Or install a specific adapter
-bash adapters/antigravity/install.sh
+bash adapters/opencode/install.sh
 bash adapters/claude/install.sh
+bash adapters/antigravity/install.sh
 bash adapters/cursor/install.sh
 bash adapters/aider/install.sh
-bash adapters/opencode/install.sh
+bash adapters/codex/install.sh
 ```
 
 ### 4. Validate
@@ -224,17 +227,18 @@ In workflows, these phases expand into 6 detailed steps: **Scratchpad → Plan �
 
 ## Adapters
 
-| Feature | Claude Code | Antigravity | Cursor | Aider | OpenCode |
-|---------|:-----------:|:-----------:|:------:|:-----:|:--------:|
-| Context files | ✅ CLAUDE.md | ✅ STYLE.md | ✅ .cursorrules | ✅ CONVENTIONS.md | ✅ AGENTS.md |
-| Agent definitions | ✅ | ❌ (in docs) | ❌ (embedded) | ❌ | ✅ .opencode/agents/ |
-| Workflows | ✅ commands/ | ✅ workflows/ | ❌ | ❌ | ✅ .opencode/commands/ |
-| Skills | ✅ | ✅ | ❌ | ❌ | ✅ .opencode/skills/ |
-| Scripts | ✅ | ✅ | ❌ | ❌ | ✅ .opencode/ |
-| MCP servers (11) | ✅ config.json | ✅ config.json | ✅ config.json | ✅ conf.yml | ✅ opencode.json |
-| Security rules | ✅ settings.json | ✅ rules/ | ✅ config.json | ✅ CONVENTIONS.md | ✅ opencode.json |
-| Life Engineering | ✅ | ✅ | ⚠️ (limited) | ⚠️ (limited) | ✅ full support |
-| Clean/uninstall | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Feature | Claude Code | Antigravity | Cursor | Aider | OpenCode | Codex |
+|---------|:-----------:|:-----------:|:------:|:-----:|:--------:|:-----:|
+| Context files | ✅ CLAUDE.md | ✅ STYLE.md | ✅ .cursorrules | ✅ CONVENTIONS.md | ✅ AGENTS.md | ✅ AGENTS.md |
+| Agent definitions | ✅ | ❌ (in docs) | ❌ (embedded) | ❌ | ✅ .opencode/agents/ | ❌ |
+| Workflows | ✅ commands/ | ✅ workflows/ | ❌ | ❌ | ✅ .opencode/commands/ | ✅ docs/workflows/ |
+| Skills | ✅ | ✅ | ❌ | ❌ | ✅ .opencode/skills/ | ✅ .codex/skills/ |
+| Scripts | ✅ | ✅ | ❌ | ❌ | ✅ .opencode/ | ❌ |
+| MCP servers (11) | ✅ config.json | ✅ config.json | ✅ config.json | ✅ conf.yml | ✅ opencode.json | ✅ config.toml |
+| Security rules | ✅ settings.json | ✅ rules/ | ✅ config.json | ✅ CONVENTIONS.md | ✅ opencode.json | ✅ AGENTS.md |
+| Life Engineering | ✅ | ✅ | ⚠️ (limited) | ⚠️ (limited) | ✅ full support | ⚠️ (limited) |
+| Clean/uninstall | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Config format | JSON | JSON | JSON | YAML | JSON | TOML |
 
 All adapter output goes into `output/<tool>/` (gitignored).
 
@@ -267,7 +271,7 @@ All adapters generate tool-native deny rules preventing AI agents from:
 - Editing `/dist/`, `/node_modules/`
 - Exposing secrets, credentials, or API keys
 
-Rules are enforced in tool-native format: OpenCode `permission.deny`, Claude Code `settings.json`, Cursor `permissions.deny`, Antigravity `rules/security.md`, Aider `CONVENTIONS.md`.
+Rules are enforced in tool-native format: OpenCode `permission.deny`, Claude Code `settings.json`, Cursor `permissions.deny`, Antigravity `rules/security.md`, Aider `CONVENTIONS.md`, Codex `AGENTS.md`.
 
 ## Migrating from Claude Code
 

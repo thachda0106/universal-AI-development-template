@@ -65,19 +65,64 @@ Never edit: `/dist/**`, `/node_modules/**`
 Never expose secrets, credentials, or API keys in code, logs, or documentation
 EOF
 
-# 2. Convert agents
-echo -e "${GREEN}✓${NC} Converting agents"
+# Helper: map skill name to human-readable capability phrase
+skill_to_capability() {
+    case "$1" in
+        locate-code-patterns) echo "Locate code patterns in codebase" ;;
+        analyze-project-structure) echo "Analyze project structure and dependencies" ;;
+        trace-execution-flow) echo "Trace execution flow through system" ;;
+        diagnose-bug-root-cause) echo "Diagnose bug root cause" ;;
+        apply-targeted-fix) echo "Apply targeted code fixes" ;;
+        verify-bug-regression) echo "Verify bug fixes and regression testing" ;;
+        validate-architecture) echo "Validate code against architecture rules" ;;
+        life-engineering-daily-practices) echo "Apply life engineering daily practices" ;;
+        *) echo "$1" ;;
+    esac
+}
+
+# 2. Convert agents to Claude format
+echo -e "${GREEN}✓${NC} Converting agents to Claude format"
 for f in "$AI_DIR"/agents/*.agent.md; do
     [ -f "$f" ] || continue
     BASENAME=$(basename "$f" .agent.md)
-    cp "$f" "$OUTPUT_DIR/.claude/agents/$BASENAME.md"
+    DESC=$(grep '^description:' "$f" | head -1 | sed 's/^description: *//' || true)
+    # Extract skill lines from YAML frontmatter (between --- markers)
+    SKILLS=$(sed -n '/^skills:/,/^[a-z]/p' "$f" | grep '^  - ' | sed 's/^  - //' || true)
+    # Extract body after frontmatter closing ---
+    BODY=$(awk 'BEGIN{count=0} /^---$/{count++; if(count<=2) next} count>=2' "$f")
+    {
+        echo "---"
+        echo "description: $DESC"
+        if [ -n "$SKILLS" ]; then
+            echo "capabilities:"
+            echo "$SKILLS" | while IFS= read -r skill || [ -n "$skill" ]; do
+                [ -z "$skill" ] && continue
+                CAP=$(skill_to_capability "$skill")
+                echo "  - $CAP"
+            done
+        fi
+        echo "---"
+        echo ""
+        echo "$BODY"
+    } > "$OUTPUT_DIR/.claude/agents/$BASENAME.md"
 done
 
-# 3. Convert workflows → commands
-echo -e "${GREEN}✓${NC} Converting workflows to commands"
+# 3. Convert workflows to Claude command format
+echo -e "${GREEN}✓${NC} Converting workflows to Claude commands"
 for f in "$AI_DIR"/workflows/*.md; do
     [ -f "$f" ] || continue
-    cp "$f" "$OUTPUT_DIR/.claude/commands/$(basename "$f")"
+    BASENAME=$(basename "$f" .md)
+    DESC=$(grep '^description:' "$f" | head -1 | sed 's/^description: *//' || true)
+    # Extract body after frontmatter closing ---
+    BODY=$(awk 'BEGIN{count=0} /^---$/{count++; if(count<=2) next} count>=2' "$f")
+    {
+        echo "---"
+        echo "description: $DESC"
+        echo "allowed-tools: Read, Bash, Edit, Write, Glob, Grep"
+        echo "---"
+        echo ""
+        echo "$BODY"
+    } > "$OUTPUT_DIR/.claude/commands/$BASENAME.md"
 done
 
 # 4. Copy skills (using shared lib)
