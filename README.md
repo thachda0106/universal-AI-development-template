@@ -40,10 +40,18 @@ Define your AI agents, workflows, skills, and conventions **once** in a canonica
 └── docs/                ← Documentation
 
 adapters/                ← Tool-specific translation layers
-├── claude/              ← Claude Code → .claude/ + CLAUDE.md
-├── antigravity/         ← Antigravity → .agent/ + .gemini/
-├── cursor/              ← Cursor → .cursorrules
-└── aider/               ← Aider → .aider.conf.yml
+├── opencode/             ← OpenCode → AGENTS.md + opencode.json + .opencode/
+├── claude/              ← Claude Code → CLAUDE.md + .claude/
+├── antigravity/         ← Antigravity → .gemini/ + .agent/
+├── cursor/              ← Cursor → .cursorrules + .cursor/
+└── aider/               ← Aider → CONVENTIONS.md + .aider.conf.yml
+
+output/                  ← Generated adapter output (gitignored)
+├── opencode/            ← AGENTS.md, opencode.json, .opencode/
+├── claude/              ← CLAUDE.md, .claude/
+├── cursor/              ← .cursorrules, .cursor/
+├── antigravity/         ← .gemini/, .agent/
+└── aider/               ← CONVENTIONS.md, .aider.conf.yml
 ```
 
 ## Quick Start
@@ -223,8 +231,43 @@ In workflows, these phases expand into 6 detailed steps: **Scratchpad → Plan �
 | Workflows | ✅ commands/ | ✅ workflows/ | ❌ | ❌ | ✅ .opencode/commands/ |
 | Skills | ✅ | ✅ | ❌ | ❌ | ✅ .opencode/skills/ |
 | Scripts | ✅ | ✅ | ❌ | ❌ | ✅ .opencode/ |
+| MCP servers (11) | ✅ config.json | ✅ config.json | ✅ config.json | ✅ conf.yml | ✅ opencode.json |
+| Security rules | ✅ settings.json | ✅ rules/ | ✅ config.json | ✅ CONVENTIONS.md | ✅ opencode.json |
 | Life Engineering | ✅ | ✅ | ⚠️ (limited) | ⚠️ (limited) | ✅ full support |
 | Clean/uninstall | ✅ | ✅ | ✅ | ✅ | ✅ |
+
+All adapter output goes into `output/<tool>/` (gitignored).
+
+## MCP Servers
+
+11 Model Context Protocol servers configured across all adapters, **all enabled by default**:
+
+| # | Server | Purpose | Package |
+|---|--------|---------|---------|
+| 1 | **Prisma** | Database schema introspection | `npx prisma mcp` |
+| 2 | **Sequential Thinking** | Structured reasoning | `@modelcontextprotocol/server-sequential-thinking` |
+| 3 | **Context7** | Documentation lookup | `@upstash/context7-mcp` |
+| 4 | **Serena** | Semantic code analysis (LSP) | `serena-agent` (uvx) |
+| 5 | **Postgres** | PostgreSQL database operations | `postgres-mcp` (uvx) |
+| 6 | **PDF Reader** | PDF content extraction | `@sylphx/pdf-reader-mcp` |
+| 7 | **Playwright** | Headless browser automation | `@playwright/mcp` |
+| 8 | **Chrome DevTools** | Live Chrome debugging & DevTools | `chrome-devtools-mcp` |
+| 9 | **Docker** | Container management | `mcp-server-docker` (uvx) |
+| 10 | **GitHub** | PRs, issues, repo management | `@github/github-mcp-server` |
+| 11 | **Brave Search** | Web search for docs/solutions | `@anthropic-ai/brave-search-mcp` |
+
+GitHub and Brave Search require environment variables (`GITHUB_TOKEN`, `BRAVE_API_KEY`).
+
+## Security Rules
+
+All adapters generate tool-native deny rules preventing AI agents from:
+
+- Reading `.env`, `terraform.tfvars`, `terraform.tfstate`, `/secrets/`, `/config/credentials.json`
+- Executing `rm -rf`, `git push`, `git reset --hard`
+- Editing `/dist/`, `/node_modules/`
+- Exposing secrets, credentials, or API keys
+
+Rules are enforced in tool-native format: OpenCode `permission.deny`, Claude Code `settings.json`, Cursor `permissions.deny`, Antigravity `rules/security.md`, Aider `CONVENTIONS.md`.
 
 ## Migrating from Claude Code
 

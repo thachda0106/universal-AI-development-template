@@ -9,6 +9,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 AI_DIR="$PROJECT_ROOT/.ai"
+OUTPUT_DIR="$PROJECT_ROOT/output/opencode"
 
 # Load shared library
 source "$PROJECT_ROOT/.ai/scripts/_lib.sh"
@@ -43,19 +44,19 @@ else
 fi
 
 echo -e "${BLUE}Creating .opencode/ directory structure...${NC}"
-mkdir -p "$PROJECT_ROOT/.opencode/agents"
-mkdir -p "$PROJECT_ROOT/.opencode/commands"
-mkdir -p "$PROJECT_ROOT/.opencode/skills"
+mkdir -p "$OUTPUT_DIR/.opencode/agents"
+mkdir -p "$OUTPUT_DIR/.opencode/commands"
+mkdir -p "$OUTPUT_DIR/.opencode/skills"
 # Create other directories only if they will have content
 # (modes, plugins, tools, themes remain empty for now)
 
 # 1. Merge context files into AGENTS.md (using shared lib)
 echo -e "${GREEN}✓${NC} Generating AGENTS.md from context files"
-merge_context_files "$AI_DIR" "$PROJECT_ROOT/AGENTS.md" "# OpenCode Agent Instructions" "OpenCode"
+merge_context_files "$AI_DIR" "$OUTPUT_DIR/AGENTS.md" "# OpenCode Agent Instructions" "OpenCode"
 
 # 2. Add OpenCode-specific instructions
 echo -e "${GREEN}✓${NC} Adding OpenCode-specific instructions"
-cat >> "$PROJECT_ROOT/AGENTS.md" << 'EOF'
+cat >> "$OUTPUT_DIR/AGENTS.md" << 'EOF'
 
 ## For OpenCode Sessions
 
@@ -67,11 +68,11 @@ cat >> "$PROJECT_ROOT/AGENTS.md" << 'EOF'
 EOF
 
 # 3. Copy AGENTS.md to .opencode/ directory as well
-cp "$PROJECT_ROOT/AGENTS.md" "$PROJECT_ROOT/.opencode/AGENTS.md"
+cp "$OUTPUT_DIR/AGENTS.md" "$OUTPUT_DIR/.opencode/AGENTS.md"
 
 # 4. Create opencode.json configuration in project root
-echo -e "${GREEN}✓${NC} Creating opencode.json configuration with MCP servers"
-cat > "$PROJECT_ROOT/opencode.json" << 'EOF'
+echo -e "${GREEN}✓${NC} Creating opencode.json configuration with security permissions and 11 MCP servers"
+cat > "$OUTPUT_DIR/opencode.json" << 'EOF'
 {
   "$schema": "https://opencode.ai/config.json",
   "instructions": ["AGENTS.md"],
@@ -87,21 +88,38 @@ cat > "$PROJECT_ROOT/opencode.json" << 'EOF'
     "todowrite": true,
     "question": true
   },
+  "permission": {
+    "deny": [
+      "Read(/.env)",
+      "Read(/.env.*)",
+      "Read(**/terraform.tfvars)",
+      "Read(**/terraform.tfvars.*)",
+      "Read(**/terraform.tfstate)",
+      "Read(**/terraform.tfstate.*)",
+      "Read(/secrets/**)",
+      "Read(/config/credentials.json)",
+      "Bash(:*rm -rf:*)",
+      "Bash(:*rm-rf:*)",
+      "Bash(:*git push:*)",
+      "Bash(:*git reset --hard:*)",
+      "Edit(/dist/**)",
+      "Edit(/node_modules/**)"
+    ],
+    "ask": [],
+    "allow": ["Bash(npm run lint:fix:*)"]
+  },
   "mcp": {
     "prisma-mcp-server": {
       "type": "local",
-      "command": ["npx", "-y", "prisma", "mcp"],
-      "enabled": false
+      "command": ["npx", "-y", "prisma", "mcp"]
     },
     "sequential-thinking": {
       "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-sequential-thinking"],
-      "enabled": false
+      "command": ["npx", "-y", "@modelcontextprotocol/server-sequential-thinking"]
     },
     "context7": {
       "type": "local",
-      "command": ["npx", "-y", "@upstash/context7-mcp@2.0.2"],
-      "enabled": false
+      "command": ["npx", "-y", "@upstash/context7-mcp@2.0.2"]
     },
     "serena": {
       "type": "local",
@@ -113,42 +131,65 @@ cat > "$PROJECT_ROOT/opencode.json" << 'EOF'
         "start-mcp-server",
         "--context",
         "claude-code"
-      ],
-      "enabled": false
+      ]
     },
     "postgres-mcp": {
       "type": "local",
       "command": ["uvx", "postgres-mcp", "--access-mode=unrestricted"],
-      "enabled": false,
       "environment": {
         "DATABASE_URI": "postgresql://postgres:123456@localhost:5432/postgres"
       }
     },
     "pdf-reader-mcp": {
       "type": "local",
-      "command": ["npx", "-y", "-q", "@sylphx/pdf-reader-mcp"],
-      "enabled": false
+      "command": ["npx", "-y", "-q", "@sylphx/pdf-reader-mcp"]
+    },
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp@latest"]
+    },
+    "chrome-devtools": {
+      "type": "local",
+      "command": ["npx", "-y", "chrome-devtools-mcp@latest"]
+    },
+    "docker": {
+      "type": "local",
+      "command": ["uvx", "mcp-server-docker"]
+    },
+    "github": {
+      "type": "local",
+      "command": ["npx", "-y", "@github/github-mcp-server"],
+      "environment": {
+        "GITHUB_TOKEN": "{env:GITHUB_TOKEN}"
+      }
+    },
+    "brave-search": {
+      "type": "local",
+      "command": ["npx", "-y", "@anthropic-ai/brave-search-mcp"],
+      "environment": {
+        "BRAVE_API_KEY": "{env:BRAVE_API_KEY}"
+      }
     }
   }
 }
 EOF
 
 # 5. Also create opencode.json in .opencode/ directory
-cp "$PROJECT_ROOT/opencode.json" "$PROJECT_ROOT/.opencode/opencode.json"
+cp "$OUTPUT_DIR/opencode.json" "$OUTPUT_DIR/.opencode/opencode.json"
 
 # 6. Copy agents from .ai/agents/ to .opencode/agents/
 echo -e "${GREEN}✓${NC} Copying agents to .opencode/agents/"
 for f in "$AI_DIR"/agents/*.agent.md; do
     [ -f "$f" ] || continue
     BASENAME=$(basename "$f" .agent.md)
-    cp "$f" "$PROJECT_ROOT/.opencode/agents/$BASENAME.md"
+    cp "$f" "$OUTPUT_DIR/.opencode/agents/$BASENAME.md"
 done
 
 # 7. Copy workflows from .ai/workflows/ to .opencode/commands/
 echo -e "${GREEN}✓${NC} Copying workflows to .opencode/commands/"
 for f in "$AI_DIR"/workflows/*.md; do
     [ -f "$f" ] || continue
-    cp "$f" "$PROJECT_ROOT/.opencode/commands/$(basename "$f")"
+    cp "$f" "$OUTPUT_DIR/.opencode/commands/$(basename "$f")"
 done
 
 # 8. Copy skills from .ai/skills/ to .opencode/skills/
@@ -156,15 +197,15 @@ echo -e "${GREEN}✓${NC} Copying skills to .opencode/skills/"
 for d in "$AI_DIR"/skills/*/; do
     [ -d "$d" ] || continue
     DIRNAME=$(basename "$d")
-    mkdir -p "$PROJECT_ROOT/.opencode/skills/$DIRNAME"
+    mkdir -p "$OUTPUT_DIR/.opencode/skills/$DIRNAME"
     if [ -f "$d/SKILL.md" ]; then
-        cp "$d/SKILL.md" "$PROJECT_ROOT/.opencode/skills/$DIRNAME/SKILL.md"
+        cp "$d/SKILL.md" "$OUTPUT_DIR/.opencode/skills/$DIRNAME/SKILL.md"
     fi
     # Copy any other files in the skill directory
     for f in "$d"*; do
         [ -f "$f" ] || continue
         if [ "$(basename "$f")" != "SKILL.md" ]; then
-            cp "$f" "$PROJECT_ROOT/.opencode/skills/$DIRNAME/$(basename "$f")"
+            cp "$f" "$OUTPUT_DIR/.opencode/skills/$DIRNAME/$(basename "$f")"
         fi
     done
 done
@@ -173,13 +214,12 @@ echo ""
 echo -e "${GREEN}=== OpenCode adapter installed successfully ===${NC}"
 echo ""
 echo "Generated files:"
-echo "  .opencode/                    (OpenCode directory structure)"
-echo "    ├── agents/                 ($(ls -1 "$PROJECT_ROOT/.opencode/agents/" 2>/dev/null | wc -l) agent files)"
-echo "    ├── commands/               ($(ls -1 "$PROJECT_ROOT/.opencode/commands/" 2>/dev/null | wc -l) command files)"
-echo "    ├── skills/                 ($(ls -1d "$PROJECT_ROOT/.opencode/skills"/*/ 2>/dev/null | wc -l) skill modules)"
-echo "    └── opencode.json           (OpenCode configuration with MCP servers)"
-echo "  AGENTS.md                    (merged context + OpenCode instructions)"
-echo "  opencode.json                (project-level OpenCode configuration with MCP servers)"
+echo "  output/opencode/              (OpenCode adapter output)"
+echo "    ├── .opencode/agents/       ($(ls -1 "$OUTPUT_DIR/.opencode/agents/" 2>/dev/null | wc -l) agent files)"
+echo "    ├── .opencode/commands/     ($(ls -1 "$OUTPUT_DIR/.opencode/commands/" 2>/dev/null | wc -l) command files)"
+echo "    ├── .opencode/skills/       ($(ls -1d "$OUTPUT_DIR/.opencode/skills"/*/ 2>/dev/null | wc -l) skill modules)"
+echo "    ├── AGENTS.md               (merged context + OpenCode instructions)"
+echo "    └── opencode.json           (project-level OpenCode configuration with security + MCP)"
 echo ""
 echo "Note: OpenCode loads configuration from multiple sources with .opencode/ directory"
 echo "having highest priority for agents, commands, and skills."

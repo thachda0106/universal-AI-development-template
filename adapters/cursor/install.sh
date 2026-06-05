@@ -9,6 +9,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 AI_DIR="$PROJECT_ROOT/.ai"
+OUTPUT_DIR="$PROJECT_ROOT/output/cursor"
 
 # Load shared library
 source "$PROJECT_ROOT/.ai/scripts/_lib.sh"
@@ -81,13 +82,41 @@ echo -e "${GREEN}✓${NC} Generating .cursorrules from context files"
         DESCRIPTION=$(grep '^description:' "$f" | head -1 | sed 's/^description: *//')
         echo "- **$AGENT_NAME**: $DESCRIPTION"
     done
-} > "$PROJECT_ROOT/.cursorrules"
+} > "$OUTPUT_DIR/.cursorrules"
 
 # Create MCP configuration for Cursor (in .cursor/config.json)
-echo -e "${GREEN}✓${NC} Creating MCP configuration for Cursor"
-mkdir -p "$PROJECT_ROOT/.cursor"
-cat > "$PROJECT_ROOT/.cursor/config.json" << 'EOF'
+echo -e "${GREEN}✓${NC} Creating Cursor configuration with security permissions and 11 MCP servers"
+mkdir -p "$OUTPUT_DIR/.cursor"
+cat > "$OUTPUT_DIR/.cursor/config.json" << 'EOF'
 {
+  "permissions": {
+    "allow": [
+      "Shell(ls)",
+      "Shell(git status)",
+      "Shell(git diff)",
+      "Shell(git log)",
+      "Shell(grep)",
+      "Shell(find)",
+      "Shell(npm)",
+      "Shell(yarn)",
+      "Shell(pnpm)"
+    ],
+    "deny": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/terraform.tfvars)",
+      "Read(**/terraform.tfvars.*)",
+      "Read(**/terraform.tfstate)",
+      "Read(**/terraform.tfstate.*)",
+      "Read(**/secrets/**)",
+      "Read(**/config/credentials.json)",
+      "Shell(rm -rf)",
+      "Shell(git push)",
+      "Shell(git reset --hard)",
+      "Write(dist/**)",
+      "Write(node_modules/**)"
+    ]
+  },
   "mcpServers": {
     "prisma-mcp-server": {
       "command": "npx",
@@ -95,24 +124,21 @@ cat > "$PROJECT_ROOT/.cursor/config.json" << 'EOF'
         "-y",
         "prisma",
         "mcp"
-      ],
-      "disabled": true
+      ]
     },
     "sequential-thinking": {
       "command": "npx",
       "args": [
         "-y",
         "@modelcontextprotocol/server-sequential-thinking"
-      ],
-      "disabled": true
+      ]
     },
     "context7": {
       "command": "npx",
       "args": [
         "-y",
         "@upstash/context7-mcp@2.0.2"
-      ],
-      "disabled": true
+      ]
     },
     "serena": {
       "command": "uvx",
@@ -123,8 +149,7 @@ cat > "$PROJECT_ROOT/.cursor/config.json" << 'EOF'
         "start-mcp-server",
         "--context",
         "claude-code"
-      ],
-      "disabled": true
+      ]
     },
     "postgres-mcp": {
       "command": "uvx",
@@ -134,8 +159,7 @@ cat > "$PROJECT_ROOT/.cursor/config.json" << 'EOF'
       ],
       "env": {
         "DATABASE_URI": "postgresql://postgres:123456@localhost:5432/postgres"
-      },
-      "disabled": true
+      }
     },
     "pdf-reader-mcp": {
       "command": "npx",
@@ -143,8 +167,33 @@ cat > "$PROJECT_ROOT/.cursor/config.json" << 'EOF'
         "-y",
         "-q",
         "@sylphx/pdf-reader-mcp"
-      ],
-      "disabled": true
+      ]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"]
+    },
+    "docker": {
+      "command": "uvx",
+      "args": ["mcp-server-docker"]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@github/github-mcp-server"],
+      "env": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+      }
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/brave-search-mcp"],
+      "env": {
+        "BRAVE_API_KEY": "${BRAVE_API_KEY}"
+      }
     }
   }
 }
@@ -154,8 +203,9 @@ echo ""
 echo -e "${GREEN}=== Cursor adapter installed successfully ===${NC}"
 echo ""
 echo "Generated files:"
-echo "  .cursorrules    (merged context + system prompt + agent summaries)"
-echo "  .cursor/config.json (MCP server configuration)"
+echo "  output/cursor/              (Cursor adapter output)"
+echo "    ├── .cursorrules           (merged context + system prompt + agent summaries)"
+echo "    └── .cursor/config.json    (security permissions + MCP server configuration)"
 echo ""
 echo "Note: Cursor doesn't support workflows or skills natively."
 echo "These are embedded in .cursorrules as context."

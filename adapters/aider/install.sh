@@ -9,6 +9,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 AI_DIR="$PROJECT_ROOT/.ai"
+OUTPUT_DIR="$PROJECT_ROOT/output/aider"
 
 # Load shared library
 source "$PROJECT_ROOT/.ai/scripts/_lib.sh"
@@ -41,11 +42,27 @@ fi
 
 # 1. Generate CONVENTIONS.md (using shared lib)
 echo -e "${GREEN}✓${NC} Generating CONVENTIONS.md"
-merge_context_files "$AI_DIR" "$PROJECT_ROOT/CONVENTIONS.md" "# AI Coding Conventions" "Aider"
+merge_context_files "$AI_DIR" "$OUTPUT_DIR/CONVENTIONS.md" "# AI Coding Conventions" "Aider"
+
+# 1a. Append security rules to CONVENTIONS.md
+echo -e "${GREEN}✓${NC} Adding security rules to CONVENTIONS.md"
+cat >> "$OUTPUT_DIR/CONVENTIONS.md" << 'EOF'
+
+---
+
+# Security Boundaries
+
+Aider approves changes interactively by default. The following are non-negotiable rules:
+
+- Never read: `.env`, `.env.*`, `**/terraform.tfvars`, `**/terraform.tfvars.*`, `**/terraform.tfstate`, `**/terraform.tfstate.*`, `/secrets/**`, `/config/credentials.json`
+- Never execute: `rm -rf`, `rm-rf`, `git push`, `git reset --hard`
+- Never edit: `/dist/**`, `/node_modules/**`
+- Never expose secrets, credentials, or API keys in code, logs, or documentation
+EOF
 
 # 2. Generate .aider.conf.yml
 echo -e "${GREEN}✓${NC} Generating .aider.conf.yml"
-cat > "$PROJECT_ROOT/.aider.conf.yml" <<EOF
+cat > "$OUTPUT_DIR/.aider.conf.yml" <<EOF
 # Aider Configuration
 # Auto-generated from .ai/ by Aider adapter
 # Do not edit directly. Edit .ai/context/ files and re-run adapter.
@@ -65,19 +82,16 @@ mcp-servers:
       - -y
       - prisma
       - mcp
-    disabled: true
   sequential-thinking:
     command: npx
     args:
       - -y
       - "@modelcontextprotocol/server-sequential-thinking"
-    disabled: true
   context7:
     command: npx
     args:
       - -y
       - "@upstash/context7-mcp@2.0.2"
-    disabled: true
   serena:
     command: uvx
     args:
@@ -87,7 +101,6 @@ mcp-servers:
       - "start-mcp-server"
       - "--context"
       - "claude-code"
-    disabled: true
   postgres-mcp:
     command: uvx
     args:
@@ -95,21 +108,48 @@ mcp-servers:
       - "--access-mode=unrestricted"
     env:
       DATABASE_URI: "postgresql://postgres:123456@localhost:5432/postgres"
-    disabled: true
   pdf-reader-mcp:
     command: npx
     args:
       - -y
       - -q
       - "@sylphx/pdf-reader-mcp"
-    disabled: true
+  playwright:
+    command: npx
+    args:
+      - -y
+      - "@playwright/mcp@latest"
+  chrome-devtools:
+    command: npx
+    args:
+      - -y
+      - "chrome-devtools-mcp@latest"
+  docker:
+    command: uvx
+    args:
+      - "mcp-server-docker"
+  github:
+    command: npx
+    args:
+      - -y
+      - "@github/github-mcp-server"
+    env:
+      GITHUB_TOKEN: "${GITHUB_TOKEN}"
+  brave-search:
+    command: npx
+    args:
+      - -y
+      - "@anthropic-ai/brave-search-mcp"
+    env:
+      BRAVE_API_KEY: "${BRAVE_API_KEY}"
 EOF
 
 echo ""
 echo -e "${GREEN}=== Aider adapter installed successfully ===${NC}"
 echo ""
 echo "Generated files:"
-echo "  .aider.conf.yml    (Aider configuration)"
-echo "  CONVENTIONS.md     (merged context + system prompt for Aider to read)"
+echo "  output/aider/              (Aider adapter output)"
+echo "    ├── CONVENTIONS.md         (merged context + system prompt + security rules)"
+echo "    └── .aider.conf.yml        (Aider configuration)"
 echo ""
 echo "Usage: aider will automatically read CONVENTIONS.md on startup."
