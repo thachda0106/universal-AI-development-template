@@ -1,0 +1,102 @@
+# Codex Project Configuration
+# Copy to ~/.codex/config.toml for global config
+# For user-level defaults, edit ~/.codex/config.toml
+
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+
+# MCP Servers (11 servers)
+# To disable a server, set enabled = false or remove the block
+
+[mcp_servers.prisma-mcp-server]
+command = "npx"
+args = ["-y", "prisma", "mcp"]
+
+[mcp_servers.sequential-thinking]
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+
+[mcp_servers.context7]
+command = "npx"
+args = ["-y", "@upstash/context7-mcp@2.0.2"]
+
+[mcp_servers.serena]
+command = "uvx"
+args = ["--from", "git+https://github.com/oraios/serena", "serena", "start-mcp-server", "--context", "claude-code"]
+
+# WARNING: Contains hardcoded database credentials.
+# For production, use env_vars or a secrets manager instead.
+[mcp_servers.postgres-mcp]
+command = "uvx"
+args = ["postgres-mcp", "--access-mode=unrestricted"]
+[mcp_servers.postgres-mcp.env]
+DATABASE_URI = "postgresql://postgres:123456@localhost:5432/postgres"
+
+[mcp_servers.pdf-reader-mcp]
+command = "npx"
+args = ["-y", "-q", "@sylphx/pdf-reader-mcp"]
+
+[mcp_servers.playwright]
+command = "npx"
+args = ["-y", "@playwright/mcp@latest"]
+
+[mcp_servers.chrome-devtools]
+command = "npx"
+args = ["-y", "chrome-devtools-mcp@latest"]
+
+[mcp_servers.docker]
+command = "uvx"
+args = ["mcp-server-docker"]
+
+[mcp_servers.github]
+command = "npx"
+args = ["-y", "@github/github-mcp-server"]
+env_vars = ["GITHUB_TOKEN"]
+
+[mcp_servers.brave-search]
+command = "npx"
+args = ["-y", "@anthropic-ai/brave-search-mcp"]
+env_vars = ["BRAVE_API_KEY"]
+
+# Custom Agents (7 agents)
+# Each agent has a corresponding config file in .codex/agents/<name>.toml
+
+[agents]
+max_threads = 5
+max_depth = 2
+
+[agents.bug-hunter]
+description = "Debug and fix bugs in the codebase. Invoke when investigating defects, crashes, or unexpected behavior."
+config_file = "./agents/bug-hunter.toml"
+nickname_candidates = ["Sherlock", "Debugger", "Watson"]
+
+[agents.code-reviewer]
+description = "Review code for quality, consistency, and best practices. This agent is READ-ONLY."
+config_file = "./agents/code-reviewer.toml"
+nickname_candidates = ["Reviewer", "Inspector", "Auditor"]
+
+[agents.doc-keeper]
+description = "Maintain project documentation. This agent NEVER changes production code."
+config_file = "./agents/doc-keeper.toml"
+nickname_candidates = ["Librarian", "Scribe", "Archivist"]
+
+[agents.feature-builder]
+description = "Implement new features and extend existing functionality."
+config_file = "./agents/feature-builder.toml"
+nickname_candidates = ["Builder", "Architect", "Creator"]
+
+[agents.life-engineer]
+description = "Execute Life Systems Engineering daily practices — system boot, emotional observability, cognitive scanning, energy management, incident response, and architecture review"
+config_file = "./agents/life-engineer.toml"
+nickname_candidates = ["Coach", "Mentor", "Guide"]
+
+[agents.performance-optimizer]
+description = "Analyze and improve system performance. Evidence-based optimization only."
+config_file = "./agents/performance-optimizer.toml"
+nickname_candidates = ["Racer", "Tuner", "Optimizer"]
+
+[agents.test-engineer]
+description = "Create and maintain test suites and verify system behavior."
+config_file = "./agents/test-engineer.toml"
+nickname_candidates = ["Tester", "Validator", "QA"]
+
