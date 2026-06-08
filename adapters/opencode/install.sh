@@ -89,24 +89,36 @@ cat > "$OUTPUT_DIR/opencode.json" << 'EOF'
     "question": true
   },
   "permission": {
-    "deny": [
-      "Read(/.env)",
-      "Read(/.env.*)",
-      "Read(**/terraform.tfvars)",
-      "Read(**/terraform.tfvars.*)",
-      "Read(**/terraform.tfstate)",
-      "Read(**/terraform.tfstate.*)",
-      "Read(/secrets/**)",
-      "Read(/config/credentials.json)",
-      "Bash(:*rm -rf:*)",
-      "Bash(:*rm-rf:*)",
-      "Bash(:*git push:*)",
-      "Bash(:*git reset --hard:*)",
-      "Edit(/dist/**)",
-      "Edit(/node_modules/**)"
-    ],
-    "ask": [],
-    "allow": ["Bash(npm run lint:fix:*)"]
+    "read": {
+      "*": "allow",
+      ".env": "deny",
+      ".env.*": "deny",
+      "**/terraform.tfvars": "deny",
+      "**/terraform.tfvars.*": "deny",
+      "**/terraform.tfstate": "deny",
+      "**/terraform.tfstate.*": "deny",
+      "**/secrets/**": "deny",
+      "**/credentials.json": "deny"
+    },
+    "edit": {
+      "*": "allow",
+      "**/dist/**": "deny",
+      "**/node_modules/**": "deny"
+    },
+    "bash": {
+      "*": "allow",
+      "rm * -rf *": "deny",
+      "rm * -r *": "deny",
+      "rm -rf *": "deny",
+      "rm -r *": "deny",
+      "git push *": "deny",
+      "git push": "deny",
+      "git reset --hard *": "deny",
+      "git reset --hard": "deny"
+    },
+    "external_directory": {
+      "*": "ask"
+    }
   },
   "mcp": {
     "prisma-mcp-server": {
