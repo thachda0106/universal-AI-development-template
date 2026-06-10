@@ -15,8 +15,8 @@ Define your AI agents, workflows, skills, and conventions **once** in a canonica
 │   ├── PROJECT.md       ← What: tech stack, commands, architecture
 │   ├── CONVENTIONS.md   ← How: coding standards, naming rules
 │   └── BOUNDARIES.md    ← Don't: forbidden actions, safety constraints
-├── agents/              ← AI persona definitions (7 canonical agents)
-├── workflows/           ← Step-by-step task automation (29 workflows)
+├── agents/              ← AI persona definitions (24 canonical agents)
+├── workflows/           ← Step-by-step task automation (30 workflows)
 │   ├── build-large-system.md          ← 🏗️ 30-phase system development lifecycle
 │   ├── build-large-system-phases-*.md ← Detailed phase descriptions
 │   ├── build-minimum-system.md        ← 🚀 9-phase compressed lifecycle
