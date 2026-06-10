@@ -54,6 +54,10 @@ mkdir -p "$OUTPUT_DIR/.opencode/skills"
 echo -e "${GREEN}✓${NC} Generating AGENTS.md from context files"
 merge_context_files "$AI_DIR" "$OUTPUT_DIR/AGENTS.md" "# OpenCode Agent Instructions" "OpenCode"
 
+# 1b. Copy context files as standalone reference files
+echo -e "${GREEN}✓${NC} Copying context files to .opencode/context/"
+copy_context_files "$AI_DIR" "$OUTPUT_DIR/.opencode"
+
 # 2. Add OpenCode-specific instructions
 echo -e "${GREEN}✓${NC} Adding OpenCode-specific instructions"
 cat >> "$OUTPUT_DIR/AGENTS.md" << 'EOF'

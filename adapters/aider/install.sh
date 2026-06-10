@@ -44,6 +44,10 @@ fi
 echo -e "${GREEN}✓${NC} Generating CONVENTIONS.md"
 merge_context_files "$AI_DIR" "$OUTPUT_DIR/CONVENTIONS.md" "# AI Coding Conventions" "Aider"
 
+# 1b. Copy context files as standalone reference files
+echo -e "${GREEN}✓${NC} Copying context files"
+copy_context_files "$AI_DIR" "$OUTPUT_DIR"
+
 # 1a. Append security rules to CONVENTIONS.md
 echo -e "${GREEN}✓${NC} Adding security rules to CONVENTIONS.md"
 cat >> "$OUTPUT_DIR/CONVENTIONS.md" << 'EOF'

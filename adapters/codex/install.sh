@@ -55,6 +55,10 @@ mkdir -p "$CODEX_DIR/docs/workflows"
 echo -e "${GREEN}✓${NC} Generating AGENTS.md from context files"
 merge_context_files "$AI_DIR" "$CODEX_DIR/AGENTS.md" "# Codex Agent Instructions" "Codex"
 
+# 1b. Copy context files as standalone reference files
+echo -e "${GREEN}✓${NC} Copying context files to .codex/context/"
+copy_context_files "$AI_DIR" "$CODEX_DIR"
+
 # 1a. Append security rules to AGENTS.md
 echo -e "${GREEN}✓${NC} Adding security rules to AGENTS.md"
 cat >> "$CODEX_DIR/AGENTS.md" << 'EOF'

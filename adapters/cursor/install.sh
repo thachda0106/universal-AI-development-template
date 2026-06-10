@@ -84,6 +84,10 @@ echo -e "${GREEN}✓${NC} Generating .cursorrules from context files"
     done
 } > "$OUTPUT_DIR/.cursorrules"
 
+# 1b. Copy context files as standalone reference files
+echo -e "${GREEN}✓${NC} Copying context files to .cursor/context/"
+copy_context_files "$AI_DIR" "$OUTPUT_DIR/.cursor"
+
 # Create MCP configuration for Cursor (in .cursor/config.json)
 echo -e "${GREEN}✓${NC} Creating Cursor configuration with security permissions and 11 MCP servers"
 mkdir -p "$OUTPUT_DIR/.cursor"

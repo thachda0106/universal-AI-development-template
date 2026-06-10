@@ -54,6 +54,10 @@ mkdir -p "$OUTPUT_DIR/.gemini"
 echo -e "${GREEN}✓${NC} Generating .gemini/STYLE.md from context files"
 merge_context_files "$AI_DIR" "$OUTPUT_DIR/.gemini/STYLE.md" "# Project AI Instructions" "Antigravity"
 
+# 1b. Copy context files as standalone reference files
+echo -e "${GREEN}✓${NC} Copying context files to .agent/context/"
+copy_context_files "$AI_DIR" "$OUTPUT_DIR/.agent"
+
 # 2. Copy workflows
 echo -e "${GREEN}✓${NC} Copying workflows"
 for f in "$AI_DIR"/workflows/*.md; do

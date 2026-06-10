@@ -8,6 +8,7 @@ target_dirs:
   - ".codex/docs/"
   - ".codex/docs/agents/"
   - ".codex/docs/workflows/"
+  - ".codex/context/"
 
 mappings:
   context:
@@ -21,6 +22,15 @@ mappings:
     ".ai/context/BOUNDARIES.md":
       target: ".codex/AGENTS.md"
       transform: "append"
+    ".ai/context/ARCHITECTURE_REVIEW.md":
+      target: ".codex/context/ARCHITECTURE_REVIEW.md"
+      transform: "copy"
+    ".ai/context/RECOMMENDED_STRUCTURE.md":
+      target: ".codex/context/RECOMMENDED_STRUCTURE.md"
+      transform: "copy"
+    ".ai/context/ADR_CANDIDATES.md":
+      target: ".codex/context/ADR_CANDIDATES.md"
+      transform: "copy"
 
   agents:
     ".ai/agents/*.agent.md":

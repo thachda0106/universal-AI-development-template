@@ -8,6 +8,7 @@ target_dirs:
   - ".claude/scripts/"
   - ".claude/prompts/"
   - ".claude/docs/"
+  - ".claude/context/"
 
 mappings:
   context:
@@ -20,6 +21,15 @@ mappings:
     ".ai/context/BOUNDARIES.md":
       target: "CLAUDE.md"
       transform: "append"
+    ".ai/context/ARCHITECTURE_REVIEW.md":
+      target: ".claude/context/ARCHITECTURE_REVIEW.md"
+      transform: "copy"
+    ".ai/context/RECOMMENDED_STRUCTURE.md":
+      target: ".claude/context/RECOMMENDED_STRUCTURE.md"
+      transform: "copy"
+    ".ai/context/ADR_CANDIDATES.md":
+      target: ".claude/context/ADR_CANDIDATES.md"
+      transform: "copy"
 
   agents:
     ".ai/agents/*.agent.md":

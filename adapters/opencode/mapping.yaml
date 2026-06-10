@@ -5,6 +5,7 @@ target_dirs:
   - ".opencode/agents/"
   - ".opencode/commands/"
   - ".opencode/skills/"
+  - ".opencode/context/"
 
 mappings:
   context:
@@ -18,6 +19,15 @@ mappings:
     ".ai/context/BOUNDARIES.md":
       target: "AGENTS.md"
       transform: "append"
+    ".ai/context/ARCHITECTURE_REVIEW.md":
+      target: ".opencode/context/ARCHITECTURE_REVIEW.md"
+      transform: "copy"
+    ".ai/context/RECOMMENDED_STRUCTURE.md":
+      target: ".opencode/context/RECOMMENDED_STRUCTURE.md"
+      transform: "copy"
+    ".ai/context/ADR_CANDIDATES.md":
+      target: ".opencode/context/ADR_CANDIDATES.md"
+      transform: "copy"
 
   agents:
     ".ai/agents/*.agent.md":

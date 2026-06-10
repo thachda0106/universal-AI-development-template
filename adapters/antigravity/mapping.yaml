@@ -2,6 +2,7 @@ adapter: antigravity
 version: "1.0.0"
 target_dirs:
   - .agent/
+  - .agent/context/
   - .gemini/
 
 mappings:
@@ -15,6 +16,15 @@ mappings:
     ".ai/context/BOUNDARIES.md":
       target: ".gemini/STYLE.md"
       transform: "append"
+    ".ai/context/ARCHITECTURE_REVIEW.md":
+      target: ".agent/context/ARCHITECTURE_REVIEW.md"
+      transform: "copy"
+    ".ai/context/RECOMMENDED_STRUCTURE.md":
+      target: ".agent/context/RECOMMENDED_STRUCTURE.md"
+      transform: "copy"
+    ".ai/context/ADR_CANDIDATES.md":
+      target: ".agent/context/ADR_CANDIDATES.md"
+      transform: "copy"
 
   agents:
     ".ai/agents/*.agent.md":

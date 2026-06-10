@@ -14,6 +14,15 @@ mappings:
     ".ai/context/BOUNDARIES.md":
       target: "CONVENTIONS.md"
       transform: "append"
+    ".ai/context/ARCHITECTURE_REVIEW.md":
+      target: "context/ARCHITECTURE_REVIEW.md"
+      transform: "copy"
+    ".ai/context/RECOMMENDED_STRUCTURE.md":
+      target: "context/RECOMMENDED_STRUCTURE.md"
+      transform: "copy"
+    ".ai/context/ADR_CANDIDATES.md":
+      target: "context/ADR_CANDIDATES.md"
+      transform: "copy"
 
   agents:
     ".ai/agents/*.agent.md":

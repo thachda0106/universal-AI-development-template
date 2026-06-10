@@ -2,6 +2,7 @@ adapter: cursor
 version: "1.0.0"
 target_dirs:
   - .cursor/
+  - .cursor/context/
 
 mappings:
   context:
@@ -14,6 +15,15 @@ mappings:
     ".ai/context/BOUNDARIES.md":
       target: ".cursorrules"
       transform: "append"
+    ".ai/context/ARCHITECTURE_REVIEW.md":
+      target: ".cursor/context/ARCHITECTURE_REVIEW.md"
+      transform: "copy"
+    ".ai/context/RECOMMENDED_STRUCTURE.md":
+      target: ".cursor/context/RECOMMENDED_STRUCTURE.md"
+      transform: "copy"
+    ".ai/context/ADR_CANDIDATES.md":
+      target: ".cursor/context/ADR_CANDIDATES.md"
+      transform: "copy"
 
   agents:
     ".ai/agents/*.agent.md":

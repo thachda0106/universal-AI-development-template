@@ -151,6 +151,31 @@ update_manifest_adapters() {
 }
 
 # ============================================================
+# Context Copy
+# ============================================================
+
+# Copy all context files from .ai/context/ to an output directory as standalone files.
+# This is separate from merge_context_files() — files are copied verbatim, not merged.
+#
+# Usage: copy_context_files <ai_dir> <output_dir>
+copy_context_files() {
+    local ai_dir="$1"
+    local output_dir="$2"
+    local context_src="$ai_dir/context"
+    local context_dst="$output_dir/context"
+
+    if [ ! -d "$context_src" ]; then
+        return 0
+    fi
+
+    mkdir -p "$context_dst"
+    for f in "$context_src"/*.md; do
+        [ -f "$f" ] || continue
+        cp "$f" "$context_dst/$(basename "$f")"
+    done
+}
+
+# ============================================================
 # Copy Helpers
 # ============================================================
 

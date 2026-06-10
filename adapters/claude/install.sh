@@ -53,6 +53,10 @@ mkdir -p "$OUTPUT_DIR/.claude/docs"
 echo -e "${GREEN}✓${NC} Generating CLAUDE.md from context files"
 merge_context_files "$AI_DIR" "$OUTPUT_DIR/CLAUDE.md" "# CLAUDE.md" "Claude Code"
 
+# 1b. Copy context files as standalone reference files
+echo -e "${GREEN}✓${NC} Copying context files to .claude/context/"
+copy_context_files "$AI_DIR" "$OUTPUT_DIR/.claude"
+
 # 1a. Append security rules to CLAUDE.md
 echo -e "${GREEN}✓${NC} Adding security rules to CLAUDE.md"
 cat >> "$OUTPUT_DIR/CLAUDE.md" << 'EOF'

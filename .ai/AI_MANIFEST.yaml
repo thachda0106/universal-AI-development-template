@@ -23,12 +23,14 @@ modules:
     - feature-builder
     - life-engineer
     - performance-optimizer
+    - platform-architect
     - test-engineer
   docs:
     - life-engineering
   workflows:
     - ai-workflow
     - create-feature
+    - design-platform-core
     - fix-bug
     - review-pr
     - add-tests
