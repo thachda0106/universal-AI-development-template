@@ -8,8 +8,8 @@ A **tool-agnostic AI development template** that works across Claude Code, Antig
 .ai/                     ← Canonical source of truth (tool-agnostic)
 ├── AI_MANIFEST.yaml     ← Template metadata
 ├── context/             ← Project-level AI instructions
-├── agents/              ← AI persona definitions
-├── workflows/           ← Step-by-step task automation (17 workflows)
+├── agents/              ← AI persona definitions (24 agents)
+├── workflows/           ← Step-by-step task automation (30 workflows)
 │   ├── build-large-system.md          ← 🏗️ 30-phase lifecycle (master)
 │   ├── build-large-system-phases-*.md ← Detailed phase descriptions
 │   ├── build-minimum-system.md        ← 🚀 9-phase compressed lifecycle
@@ -20,6 +20,35 @@ A **tool-agnostic AI development template** that works across Claude Code, Antig
 └── docs/                ← Documentation
     └── BUILD_LARGE_SYSTEM_GUIDE.md    ← 📖 How to use the lifecycle
 ```
+
+## Agents (24)
+
+| Agent | Role |
+|---|---|
+| `bug-hunter` | Debug and fix defects |
+| `code-reviewer` | Review code quality (read-only) |
+| `doc-keeper` | Maintain project documentation |
+| `feature-builder` | Implement new features |
+| `life-engineer` | Life systems engineering |
+| `performance-optimizer` | Evidence-based performance tuning |
+| `platform-architect` | Design platform core packages |
+| `test-engineer` | Create/maintain test suites |
+| `backend-architect` | Design reliable backend systems |
+| `business-panel-experts` | Multi-framework business strategy |
+| `deep-research` | External knowledge gathering |
+| `deep-research-agent` | Comprehensive adaptive research |
+| `devops-architect` | Infrastructure & CI/CD automation |
+| `frontend-architect` | Accessible, performant UIs |
+| `learning-guide` | Progressive programming education |
+| `pm-agent` | Self-improving project management |
+| `python-expert` | Production-ready Python code |
+| `quality-engineer` | Test strategy & edge case detection |
+| `refactoring-expert` | Systematic code improvement |
+| `repo-index` | Repository indexing & briefing |
+| `requirements-analyst` | Requirements discovery & PRDs |
+| `root-cause-analyst` | Evidence-based problem investigation |
+| `security-engineer` | Vulnerability assessment & compliance |
+| `socratic-mentor` | Discovery learning through questioning |
 
 ## Quick Start
 

@@ -17,13 +17,29 @@ adapters: []
 # Canonical modules included in this template
 modules:
   agents:
+    - backend-architect
     - bug-hunter
+    - business-panel-experts
     - code-reviewer
+    - deep-research
+    - deep-research-agent
+    - devops-architect
     - doc-keeper
     - feature-builder
+    - frontend-architect
+    - learning-guide
     - life-engineer
     - performance-optimizer
     - platform-architect
+    - pm-agent
+    - python-expert
+    - quality-engineer
+    - refactoring-expert
+    - repo-index
+    - requirements-analyst
+    - root-cause-analyst
+    - security-engineer
+    - socratic-mentor
     - test-engineer
   docs:
     - life-engineering
