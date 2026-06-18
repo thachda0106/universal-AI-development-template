@@ -47,6 +47,7 @@ modules:
     - ai-workflow
     - create-feature
     - design-platform-core
+    - design-to-code-pipeline
     - fix-bug
     - review-pr
     - add-tests
