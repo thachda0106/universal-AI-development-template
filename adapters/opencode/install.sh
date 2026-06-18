@@ -75,7 +75,7 @@ EOF
 cp "$OUTPUT_DIR/AGENTS.md" "$OUTPUT_DIR/.opencode/AGENTS.md"
 
 # 4. Create opencode.json configuration in project root
-echo -e "${GREEN}✓${NC} Creating opencode.json configuration with security permissions and 11 MCP servers"
+echo -e "${GREEN}✓${NC} Creating opencode.json configuration with security permissions and 12 MCP servers"
 cat > "$OUTPUT_DIR/opencode.json" << 'EOF'
 {
   "$schema": "https://opencode.ai/config.json",
@@ -178,6 +178,10 @@ cat > "$OUTPUT_DIR/opencode.json" << 'EOF'
       "environment": {
         "GITHUB_TOKEN": "{env:GITHUB_TOKEN}"
       }
+    },
+    "codegraph": {
+      "type": "local",
+      "command": ["npx", "-y", "@colbymchenry/codegraph", "serve", "--mcp"]
     },
     "brave-search": {
       "type": "local",

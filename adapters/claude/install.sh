@@ -159,7 +159,7 @@ for f in "$AI_DIR"/docs/*; do
 done
 
 # 8. Create MCP configuration for Claude Code
-echo -e "${GREEN}✓${NC} Creating MCP configuration with 11 servers for Claude Code"
+echo -e "${GREEN}✓${NC} Creating MCP configuration with 12 servers for Claude Code"
 cat > "$OUTPUT_DIR/.claude/config.json" << 'EOF'
 {
   "mcpServers": {
@@ -232,6 +232,10 @@ cat > "$OUTPUT_DIR/.claude/config.json" << 'EOF'
       "env": {
         "GITHUB_TOKEN": "${GITHUB_TOKEN}"
       }
+    },
+    "codegraph": {
+      "command": "npx",
+      "args": ["-y", "@colbymchenry/codegraph", "serve", "--mcp"]
     },
     "brave-search": {
       "command": "npx",

@@ -206,7 +206,7 @@ cat > "$CODEX_DIR/rules/security.md" << 'RULESEOF'
 RULESEOF
 
 # 6. Generate config.toml with MCP servers and permissions
-echo -e "${GREEN}✓${NC} Creating config.toml with 11 MCP servers"
+echo -e "${GREEN}✓${NC} Creating config.toml with 12 MCP servers"
 cat > "$CODEX_DIR/config.toml" << 'EOF'
 # Codex Configuration
 # Auto-generated from .ai/ by Codex adapter
@@ -267,6 +267,10 @@ args = ["-y", "@github/github-mcp-server"]
 [mcp_servers.github.env]
 GITHUB_TOKEN = "${GITHUB_TOKEN}"
 
+[mcp_servers.codegraph]
+command = "npx"
+args = ["-y", "@colbymchenry/codegraph", "serve", "--mcp"]
+
 [mcp_servers.brave-search]
 command = "npx"
 args = ["-y", "@anthropic-ai/brave-search-mcp"]
@@ -317,7 +321,7 @@ echo ""
 echo "Generated files:"
 echo "  output/codex/.codex/        (Codex adapter output — copy to ~/.codex/)"
 echo "    ├── AGENTS.md              (merged context + system prompt + security rules + workflow index)"
-echo "    ├── config.toml            (11 MCP servers + 7 custom agents + permissions + sandbox config)"
+echo "    ├── config.toml            (12 MCP servers + 7 custom agents + permissions + sandbox config)"
 echo "    ├── agents/                ($(ls -1 "$CODEX_DIR/agents"/*.toml 2>/dev/null | wc -l) agent config files)"
 echo "    ├── skills/                ($(ls -1d "$CODEX_DIR/skills"/*/ 2>/dev/null | wc -l) skill + workflow modules)"
 echo "    ├── rules/                 (security boundary rules)"

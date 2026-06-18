@@ -234,7 +234,7 @@ In workflows, these phases expand into 6 detailed steps: **Scratchpad → Plan �
 | Workflows | ✅ commands/ | ✅ workflows/ | ❌ | ❌ | ✅ .opencode/commands/ | ✅ docs/workflows/ |
 | Skills | ✅ | ✅ | ❌ | ❌ | ✅ .opencode/skills/ | ✅ .codex/skills/ |
 | Scripts | ✅ | ✅ | ❌ | ❌ | ✅ .opencode/ | ❌ |
-| MCP servers (11) | ✅ config.json | ✅ config.json | ✅ config.json | ✅ conf.yml | ✅ opencode.json | ✅ config.toml |
+| MCP servers (12) | ✅ config.json | ✅ config.json | ✅ config.json | ✅ conf.yml | ✅ opencode.json | ✅ config.toml |
 | Security rules | ✅ settings.json | ✅ rules/ | ✅ config.json | ✅ CONVENTIONS.md | ✅ opencode.json | ✅ AGENTS.md |
 | Life Engineering | ✅ | ✅ | ⚠️ (limited) | ⚠️ (limited) | ✅ full support | ⚠️ (limited) |
 | Clean/uninstall | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
@@ -244,7 +244,7 @@ All adapter output goes into `output/<tool>/` (gitignored).
 
 ## MCP Servers
 
-11 Model Context Protocol servers configured across all adapters, **all enabled by default**:
+12 Model Context Protocol servers configured across all adapters, **all enabled by default**:
 
 | # | Server | Purpose | Package |
 |---|--------|---------|---------|
@@ -258,9 +258,10 @@ All adapter output goes into `output/<tool>/` (gitignored).
 | 8 | **Chrome DevTools** | Live Chrome debugging & DevTools | `chrome-devtools-mcp` |
 | 9 | **Docker** | Container management | `mcp-server-docker` (uvx) |
 | 10 | **GitHub** | PRs, issues, repo management | `@github/github-mcp-server` |
-| 11 | **Brave Search** | Web search for docs/solutions | `@anthropic-ai/brave-search-mcp` |
+| 11 | **CodeGraph** | Code intelligence & knowledge graph | `@colbymchenry/codegraph` (npx) |
+| 12 | **Brave Search** | Web search for docs/solutions | `@anthropic-ai/brave-search-mcp` |
 
-GitHub and Brave Search require environment variables (`GITHUB_TOKEN`, `BRAVE_API_KEY`).
+GitHub and Brave Search require environment variables (`GITHUB_TOKEN`, `BRAVE_API_KEY`). CodeGraph requires a `.codegraph/` index (run `codegraph index` first).
 
 ## Security Rules
 

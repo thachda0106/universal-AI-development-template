@@ -100,7 +100,7 @@ if [ -f "$AI_DIR/README.md" ]; then
 fi
 
 # 7. Create MCP configuration for Antigravity
-echo -e "${GREEN}✓${NC} Creating MCP configuration with 11 servers for Antigravity"
+echo -e "${GREEN}✓${NC} Creating MCP configuration with 12 servers for Antigravity"
 cat > "$OUTPUT_DIR/.agent/config.json" << 'EOF'
 {
   "mcpServers": {
@@ -173,6 +173,10 @@ cat > "$OUTPUT_DIR/.agent/config.json" << 'EOF'
       "env": {
         "GITHUB_TOKEN": "${GITHUB_TOKEN}"
       }
+    },
+    "codegraph": {
+      "command": "npx",
+      "args": ["-y", "@colbymchenry/codegraph", "serve", "--mcp"]
     },
     "brave-search": {
       "command": "npx",

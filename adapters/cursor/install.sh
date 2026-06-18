@@ -89,7 +89,7 @@ echo -e "${GREEN}✓${NC} Copying context files to .cursor/context/"
 copy_context_files "$AI_DIR" "$OUTPUT_DIR/.cursor"
 
 # Create MCP configuration for Cursor (in .cursor/config.json)
-echo -e "${GREEN}✓${NC} Creating Cursor configuration with security permissions and 11 MCP servers"
+echo -e "${GREEN}✓${NC} Creating Cursor configuration with security permissions and 12 MCP servers"
 mkdir -p "$OUTPUT_DIR/.cursor"
 cat > "$OUTPUT_DIR/.cursor/config.json" << 'EOF'
 {
@@ -191,6 +191,10 @@ cat > "$OUTPUT_DIR/.cursor/config.json" << 'EOF'
       "env": {
         "GITHUB_TOKEN": "${GITHUB_TOKEN}"
       }
+    },
+    "codegraph": {
+      "command": "npx",
+      "args": ["-y", "@colbymchenry/codegraph", "serve", "--mcp"]
     },
     "brave-search": {
       "command": "npx",

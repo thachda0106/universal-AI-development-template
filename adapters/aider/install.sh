@@ -139,6 +139,13 @@ mcp-servers:
       - "@github/github-mcp-server"
     env:
       GITHUB_TOKEN: "${GITHUB_TOKEN}"
+  codegraph:
+    command: npx
+    args:
+      - -y
+      - "@colbymchenry/codegraph"
+      - serve
+      - "--mcp"
   brave-search:
     command: npx
     args:
