@@ -7,15 +7,11 @@ agent: review-agent
 
 Review code changes produced by another AI agent. Act as a strict Principal Engineer / Security Reviewer. Find bugs, security vulnerabilities, architecture violations, and correctness issues in the implementation.
 
-> [!CAUTION]
-> This workflow requires human approval between every phase.
-> Do NOT skip phases. Do NOT combine phases into a single response.
+Execute all steps in sequence without stopping. Output `review-implementation.md` when complete.
 
 ---
 
-## PHASE 1 — LOAD CONTEXT
-
-**No review output in this phase. Research only.**
+## STEP 1 — LOAD CONTEXT
 
 1. Read project context files (`context/PROJECT.md`, `context/CONVENTIONS.md`, `context/BOUNDARIES.md`)
 2. Gather the changes to review:
@@ -23,29 +19,10 @@ Review code changes produced by another AI agent. Act as a strict Principal Engi
    - Run `git diff HEAD~1` or `git log --oneline -5` to see recent commits
    - Read the full content of all changed files
 3. If a plan exists (`PLAN.md`, `TASKS.md`), read it to understand intended behavior
-4. Write into `SCRATCHPAD.md` (your own scratchpad for this review):
-   - Which files changed
-   - What the changes are supposed to do
-   - Initial observations
-   - Areas of concern
-
-**Output**: `SCRATCHPAD.md`
-
-### 🛑 HARD STOP — APPROVAL GATE 1
-
-```
-Say: "Phase 1 (Load Context) complete. Please review SCRATCHPAD.md.
-Reply APPROVE to continue to the review execution phase, or provide feedback."
-WAIT for explicit approval.
-```
 
 ---
 
-## PHASE 2 — IMPLEMENTATION REVIEW EXECUTION
-
-**Scratchpad must be APPROVED.**
-
-Execute the review following the structure from `prompts/templates/review-implementation.md`:
+## STEP 2 — IMPLEMENTATION REVIEW
 
 ### 1. Correctness Analysis
 - Does the code match the plan (if plan exists)?
@@ -90,42 +67,124 @@ Execute the review following the structure from `prompts/templates/review-implem
 - Are edge cases covered?
 - Are mocks used correctly?
 
-### Output
+---
 
-Generate `review-implementation.md` using the template from `prompts/templates/review-implementation.md`.
+## STEP 3 — OUTPUT
+
+Generate `review-implementation.md` with the following structure. Every issue must reference specific file and line. Classify each issue by severity.
+
+### Output Structure
+
+```markdown
+## Review Metadata
+
+- **Reviewed by**: review-agent
+- **Review date**: _YYYY-MM-DD_
+- **Commit(s) reviewed**: _git commit hash or range_
+- **Files changed**: _list of changed files_
+- **Plan reference**: _PLAN.md version if available_
+
+## Summary
+
+_Brief overview of what was implemented and overall assessment. 2-3 sentences._
+
+## Correctness Issues
+
+_Code that is logically wrong or doesn't match the plan._
+
+### CO-1: [Issue Title]
+- **File**: `path/to/file.ext:line`
+- **Problem**: [What is wrong]
+- **Impact**: [What breaks]
+- **Fix**: [How to fix]
+
+## Bugs
+
+_Actual bugs that will cause failures._
+
+### B-1: [Bug Title]
+- **File**: `path/to/file.ext:line`
+- **Problem**: [Bug description]
+- **Scenario**: [How to reproduce / trigger]
+- **Fix**: [How to fix]
+
+## Architecture Violations
+
+_Code that breaks project patterns or architectural rules._
+
+### AV-1: [Violation Title]
+- **File**: `path/to/file.ext:line`
+- **Problem**: [What rule is violated]
+- **Expected**: [What should be done instead]
+- **Fix**: [How to fix]
+
+## Security Issues
+
+_Vulnerabilities in the implementation._
+
+### S-1: [Issue Title]
+- **File**: `path/to/file.ext:line`
+- **Vulnerability**: [What can be exploited]
+- **Impact**: [What an attacker can do]
+- **Fix**: [How to fix]
+
+## Performance Issues
+
+_Code that will cause performance problems._
+
+### P-1: [Issue Title]
+- **File**: `path/to/file.ext:line`
+- **Problem**: [N+1 query, missing index, unnecessary allocation]
+- **Impact**: [Performance degradation]
+- **Fix**: [How to fix]
+
+## Error Handling Gaps
+
+### EH-1: [Gap Title]
+- **File**: `path/to/file.ext:line`
+- **Problem**: [Missing catch, wrong status code, leaked details]
+- **Fix**: [How to fix]
+
+## Testing Gaps
+
+### T-1: [Gap Title]
+- **What's missing**: [Test case not covered]
+- **Risk**: [What could break undetected]
+
+## Maintainability Issues
+
+### M-1: [Issue Title]
+- **File**: `path/to/file.ext:line`
+- **Problem**: [Magic numbers, unclear naming, excessive complexity]
+- **Fix**: [How to improve]
+
+## Required Fixes
+
+### MUST FIX (blocks merge)
+1. [Reference to issue above]
+2. [Reference to issue above]
+
+### SHOULD FIX (follow-up recommended)
+1. [Reference to issue above]
+
+### OPTIONAL (nice to have)
+1. [Reference to issue above]
+
+## Approval Status
+
+- **APPROVED** — No MUST_FIX items. Ready for merge.
+- **APPROVED_WITH_COMMENTS** — No MUST_FIX but SHOULD_FIX items exist. Can merge with follow-up.
+- **CHANGES_REQUESTED** — MUST_FIX items present. Must fix before merge.
+
+**Status**: [APPROVED / APPROVED_WITH_COMMENTS / CHANGES_REQUESTED]
+**MUST_FIX count**: _
+**SHOULD_FIX count**: _
+**OPTIONAL count**: _
+```
 
 **Severity Classification:**
 - **MUST_FIX**: Bugs, security vulnerabilities, data corruption risk, correctness errors
 - **SHOULD_FIX**: Architecture violations, performance issues, missing error handling
 - **OPTIONAL**: Style improvements, test coverage suggestions, maintainability concerns
 
-**Approval Status:**
-- **APPROVED**: No MUST_FIX items. Code is ready for merge.
-- **APPROVED_WITH_COMMENTS**: No MUST_FIX but SHOULD_FIX items exist. Code can merge with follow-up.
-- **CHANGES_REQUESTED**: MUST_FIX items present. Code must be fixed before merge.
-
----
-
-## PHASE 3 — DELIVER REVIEW
-
-**Review must be complete.**
-
-1. Present the review summary to the human
-2. If APPROVED or APPROVED_WITH_COMMENTS: Recommend merge or follow-up
-3. If CHANGES_REQUESTED: List the MUST_FIX items that need to be addressed
-4. Wait for human decision on next steps
-
-### 🛑 HARD STOP — HUMAN DECISION
-
-```
-Say: "Review complete. review-implementation.md generated.
-Status: [APPROVED / APPROVED_WITH_COMMENTS / CHANGES_REQUESTED]
-[X] MUST_FIX, [Y] SHOULD_FIX, [Z] OPTIONAL items found.
-
-If CHANGES_REQUESTED: Have the implementing agent fix MUST_FIX items, then re-run this review.
-If APPROVED_WITH_COMMENTS: Create follow-up tasks for SHOULD_FIX items.
-If APPROVED: Ready to merge.
-
-What would you like to do next?"
-WAIT for human decision.
-```
+Present the summary to the human with the approval status and issue counts.

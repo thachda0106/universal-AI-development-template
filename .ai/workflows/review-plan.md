@@ -7,15 +7,11 @@ agent: review-agent
 
 Review plan artifacts produced by another AI agent. Act as a strict Principal Engineer / Architect. Find architectural flaws, security gaps, missing requirements, and correctness issues before implementation begins.
 
-> [!CAUTION]
-> This workflow requires human approval between every phase.
-> Do NOT skip phases. Do NOT combine phases into a single response.
+Execute all steps in sequence without stopping. Output `review-plan.md` when complete.
 
 ---
 
-## PHASE 1 — LOAD CONTEXT
-
-**No review output in this phase. Research only.**
+## STEP 1 — LOAD CONTEXT
 
 1. Read project context files (`context/PROJECT.md`, `context/CONVENTIONS.md`, `context/BOUNDARIES.md`)
 2. Locate and read the plan artifacts to review:
@@ -23,29 +19,10 @@ Review plan artifacts produced by another AI agent. Act as a strict Principal En
    - `PLAN.md` — architecture decisions, modules, API contracts, schema
    - `TASKS.md` — ordered implementation steps, dependencies, acceptance criteria
 3. Understand what the plan is trying to achieve
-4. Write into `SCRATCHPAD.md` (your own scratchpad for this review):
-   - What is being reviewed
-   - Scope of the plan
-   - Initial observations
-   - Areas of concern
-
-**Output**: `SCRATCHPAD.md`
-
-### 🛑 HARD STOP — APPROVAL GATE 1
-
-```
-Say: "Phase 1 (Load Context) complete. Please review SCRATCHPAD.md.
-Reply APPROVE to continue to the review execution phase, or provide feedback."
-WAIT for explicit approval.
-```
 
 ---
 
-## PHASE 2 — PLAN REVIEW EXECUTION
-
-**Scratchpad must be APPROVED.**
-
-Execute the review following the structure from `prompts/templates/review-plan.md`:
+## STEP 2 — PLAN REVIEW
 
 ### 1. Architecture Review
 - Are architecture decisions sound and justified?
@@ -83,40 +60,101 @@ Execute the review following the structure from `prompts/templates/review-plan.m
 - Are acceptance criteria specific and verifiable?
 - Is the ordering correct (no task depends on a later task)?
 
-### Output
+---
 
-Generate `review-plan.md` using the template from `prompts/templates/review-plan.md`.
+## STEP 3 — OUTPUT
+
+Generate `review-plan.md` with the following structure. Every critique must reference specific plan sections. Classify each issue by severity.
+
+### Output Structure
+
+```markdown
+## Review Metadata
+
+- **Reviewed by**: review-agent
+- **Review date**: _YYYY-MM-DD_
+- **Plan version**: _version from PLAN.md if present_
+- **Artifacts reviewed**: SCRATCHPAD.md, PLAN.md, TASKS.md
+
+## Summary
+
+_Brief overview of what the plan proposes and overall assessment. 2-3 sentences._
+
+## Critical Issues (MUST_FIX)
+
+_Issues that block implementation. Architecture flaws, missing critical requirements, security holes, data loss risk._
+
+### CI-1: [Issue Title]
+- **Reference**: [plan.md section or scratchpad observation]
+- **Problem**: [What is wrong]
+- **Impact**: [What breaks if not fixed]
+- **Required**: [What must change]
+
+_(Add CI-2, CI-3, etc. as needed. Maximum 5 MUST_FIX items.)_
+
+## Architecture Problems
+
+_Design decisions that are suboptimal or risky._
+
+### AP-1: [Issue Title]
+- **Reference**: [plan.md section]
+- **Concern**: [What is concerning]
+- **Suggestion**: [What to consider instead]
+- **Severity**: SHOULD_FIX / OPTIONAL
+
+## Missing Requirements
+
+### MR-1: [Requirement]
+- **What's missing**: [Description]
+- **Why it matters**: [Impact of omission]
+
+## Scalability Concerns
+
+### SC-1: [Concern]
+- **Reference**: [plan.md section]
+- **Problem**: [Why it won't scale]
+- **Suggestion**: [Alternative approach]
+
+## Security Concerns
+
+### SEC-1: [Concern]
+- **Reference**: [plan.md section]
+- **Vulnerability**: [What can be exploited]
+- **Required**: [What must be added]
+
+## Data Consistency Concerns
+
+### DC-1: [Concern]
+- **Reference**: [plan.md section]
+- **Problem**: [What can go wrong]
+- **Required**: [What must be defined]
+
+## Task Breakdown Issues
+
+### T-1: [Issue]
+- **Task**: [Task number and title]
+- **Problem**: [Missing step, wrong order, vague criteria]
+
+## Suggested Changes
+
+1. [Change 1]
+2. [Change 2]
+3. [Change 3]
+
+## Approval Status
+
+- **APPROVED** — No MUST_FIX items. Ready for implementation.
+- **NEEDS_REVISION** — MUST_FIX items present. Plan must be updated before implementation.
+
+**Status**: [APPROVED / NEEDS_REVISION]
+**MUST_FIX count**: _
+**SHOULD_FIX count**: _
+**OPTIONAL count**: _
+```
 
 **Severity Classification:**
 - **MUST_FIX**: Architecture flaws, missing critical requirements, security holes, data loss risk
 - **SHOULD_FIX**: Missing edge cases, scalability concerns, anti-patterns
 - **OPTIONAL**: Suggestions, nice-to-haves, future improvements
 
-**Approval Status:**
-- **APPROVED**: No MUST_FIX items. Ready for implementation.
-- **NEEDS_REVISION**: MUST_FIX items present. Plan must be updated before implementation.
-
----
-
-## PHASE 3 — DELIVER REVIEW
-
-**Review must be complete.**
-
-1. Present the review summary to the human
-2. If APPROVED: Recommend proceeding to implementation
-3. If NEEDS_REVISION: Recommend the planning agent updates the plan based on review feedback
-4. Wait for human decision on next steps
-
-### 🛑 HARD STOP — HUMAN DECISION
-
-```
-Say: "Review complete. review-plan.md generated.
-Status: [APPROVED / NEEDS_REVISION]
-[X] MUST_FIX, [Y] SHOULD_FIX, [Z] OPTIONAL items found.
-
-If NEEDS_REVISION: Have the planning agent update the plan, then re-run this review.
-If APPROVED: Proceed to implementation.
-
-What would you like to do next?"
-WAIT for human decision.
-```
+Present the summary to the human with the approval status and issue counts.
