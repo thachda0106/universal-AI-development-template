@@ -37,6 +37,7 @@ modules:
     - refactoring-expert
     - repo-index
     - requirements-analyst
+    - review-agent
     - root-cause-analyst
     - security-engineer
     - socratic-mentor
@@ -50,6 +51,8 @@ modules:
     - design-to-code-pipeline
     - fix-bug
     - review-pr
+    - review-plan
+    - review-implemented-files
     - add-tests
     - get-docs
     - review-architecture
